@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>达人资料</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">达人资料</div>
+</header>
+<div class="talentDetail" style="padding:50px 0 50px 0">
+    <ul>
+        <li>
+            <span class="textSpace">姓名:</span><i></i>
+        </li>
+        <li>
+            <span class="textSpace">艺名:</span><i></i>
+        </li>
+        <li>
+            <span class="textSpace">电话:</span><i></i>
+        </li>
+        <li>
+            <span>家庭地址:</span>
+            <p class="adress">
+
+            </p>
+        </li>
+        <li>
+            <span>加入时间:</span><i></i>
+        </li>
+        <li class="talentImg">
+            <span>个人风采:</span>
+            <p>
+                <!--<img src="../image/news2.jpg" alt="">-->
+            </p>
+        </li>
+        <li>
+            <span>特长简介:</span>
+            <p class="adress"></p>
+        </li>
+    </ul>
+</div>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/queryFindTalentDetail?requestUser=sxbctv&requestPassword=123456",{id:sessionStorage.getItem("talentId")},function(data){
+        console.log(data);
+        $(".talentDetail li").eq(0).find("i").html(data.data.realName);
+        $(".talentDetail li").eq(1).find("i").html(data.data.stageName);
+        $(".talentDetail li").eq(2).find("i").html(data.data.phone);
+        $(".talentDetail li").eq(3).find("p").html(data.data.address);
+        $(".talentDetail li").eq(4).find("i").html(data.data.creatime);
+        $(".talentDetail li").eq(6).find("p").html(data.data.introduction);
+        if(data.data.image){
+            $.each(data.data.image,function(index,el){
+                $(".talentImg p").append(`
+                    <img src="${el}" alt="">
+                 `)
+            });
+        }
+
+
+
+
+    })
+
+
+</script>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript" src="../js/libs/less/less.js"></script>
+    <title>党员资讯</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">信息详情</div>
+</header>
+<div class="inforCon" style="margin-top:50px">
+    <div class="info-content">
+
+    </div>
+    <div class="support">
+        <img src="../image/zan3.png" alt="">
+        <span></span>
+    </div>
+    <!--评论-->
+    <h4 class="newComment">最新评论</h4>
+    <div class="commentAll" style="margin-bottom: 60px">
+        <!--评论区域 begin-->
+        <div class="reviewArea clearfix">
+            <textarea class="content comment-input" placeholder="评论&hellip;"></textarea>
+            <input type="button" value="评论" class="plBtn">
+        </div>
+        <h4>评论列表</h4>
+        <div class="commentCon">
+            <!--<div class="commentList">-->
+                <!--<p>张三:</p>-->
+                <!--<p>这篇文章说的非常好</p>-->
+                <!--<input type="button" value="删除">-->
+                <!--&lt;!&ndash;<span>删除</span>&ndash;&gt;-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/jquery-1.12.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/jquery.flexText.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $.get("http://59.152.38.197:8188/HiSuOpenAPI/api/pubInterface/kinds?requestUser=sxbctv&requestPassword=123456",{itemId:sessionStorage.getItem("itemId"),functionId:sessionStorage.getItem("djFuncId"),cateId:sessionStorage.getItem("djSecKindId")},function(data){
+            // console.log(data);
+            $.each(data.dataList,function(index,el){
+                var kinsdId = sessionStorage.getItem("cateId");
+                if(kinsdId == el.id ){
+                    $(".info-content").html(el.content);
+                }
+            })
+        });
+        //获取初始点赞的状态
+        $.get("http://59.152.38.197:8188/SmartHotelInterface/api/appUser/querySupportStatus?&requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId"),kindsId:sessionStorage.getItem("cateId")},function(data){
+            console.log(data);
+            console.log(data.data);
+            sessionStorage.setItem("supportStatus",data.data);
+            if(data.data == 1){
+                $(".support img").attr("src","../image/zan3.png")
+            }else if(data.data == 0){
+                $(".support img").attr("src","../image/zan1.png")
+            }
+        });
+        getSupportNum();
+        getCommentList();
+        function getSupportNum(){
+            //获取点赞的数量
+            $.get("http://59.152.38.197:8188/SmartHotelInterface/api/appUser/querySupportNum?&requestUser=sxbctv&requestPassword=123456",{kindsId:sessionStorage.getItem("cateId")},function(data){
+                console.log(data);
+                $(".support span").html("("+ data.data+")");
+            });
+        }
+        function getCommentList(){
+            //获得评论列表
+            $.get("http://59.152.38.197:8188/SmartHotelInterface/api/appUser/listComment?&requestUser=sxbctv&requestPassword=123456",{kindsId:sessionStorage.getItem("cateId")},function(data){
+                console.log(data);
+                $(".commentCon").html("");
+                $.each(data.dataList,function(index,el){
+                    $(".commentCon").append(`
+                        <div class="commentList">
+                            <p>${el.userName}:</p>
+                            <p>${el.content}</p>
+                            <input type="button" value="删除" id="${el.id}">
+                        </div>
+                    `);
+                    if(el.appUserId == sessionStorage.getItem("appUserId")){
+                        $(".commentList input").css("display","block")
+                    }
+                });
+                //删除评论
+                $(".commentList input").on("click",function(){
+                    var  commonId = $(this).attr("id");
+                    console.log(commonId);
+                    $.get("http://59.152.38.197:8188/SmartHotelInterface/api/appUser/delCommentById?&requestUser=sxbctv&requestPassword=123456",{id:commonId},function(data){
+                        console.log(data);
+                        getCommentList();
+                        alert("删除成功!");
+                    })
+                })
+
+            })
+        }
+
+        $(".support img").on("click",function(){
+            var imgSrc = $(this).attr("src");
+            console.log(imgSrc);
+            var srcNum = imgSrc.substr(-5,1);
+            console.log(srcNum);
+                if(srcNum ==3){
+                   var  status = 0;
+                   var imgSrc = imgSrc.replace(/3/g,'1');
+                    console.log(imgSrc);
+                    $(".support img").attr("src",imgSrc)
+                }else{
+                    var status = 1;
+                    var imgSrc = imgSrc.replace(/1/g,'3');
+                    console.log(imgSrc);
+                    $(".support img").attr("src",imgSrc)
+                }
+            $.get("http://59.152.38.197:8188/SmartHotelInterface/api/appUser/addSupport?&requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId"),type:1,status:status,kindsId:sessionStorage.getItem("cateId")},function (data) {
+                console.log(data);
+                getSupportNum();
+            })
+        });
+        //提交评论
+        $(".plBtn").on("click",function(){
+            var content = $(".reviewArea textarea").val();
+            // console.log(encodeURI(content));sessionStorage.getItem("djUserId")
+            if(content != ""){
+                $.get("http://59.152.38.197:8188/SmartHotelInterface/api/appUser/addComment?&requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId"),type:1,content:encodeURI(content),kindsId:sessionStorage.getItem("cateId")},function(data){
+                    console.log(data);
+                    alert("评论成功");
+                    $(".reviewArea textarea").val("");
+                    $(".commentCon").html("");
+                    getCommentList();
+                })
+            }else{
+                alert("内容不能为空")
+            }
+        })
+
+
+    })
+</script>
+</html>

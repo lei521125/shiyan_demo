@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>政务服务</title>
+    <script type="text//html" id="menuSwiper-template">
+       {{each dataList as value  i}}
+        <div class="swiper-slide">
+            <a href="javascript:;">
+                <img src="{{value.image}}">
+            </a>
+        </div>
+       {{/each}}
+    </script>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">政务服务</div>
+</header>
+<!--轮播图-->
+<section style="margin-top: 50px;">
+    <div class="idxSwiper swiper-container">
+        <div class="swiper-wrapper" id="indexAds">
+            <div class="swiper-slide">
+              <a href="javascript:;">
+                  <img src="../image/zhengwu/banner.png">
+              </a>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+<!--公告-->
+<section>
+    <div class="idxNotice">
+        <img src="../image/tongzhi-2.png">
+        <ul class="line">
+            <marquee behavior="scroll"  scrollamount="3">党建引领聚合力，多元共治建家园</marquee>
+        </ul>
+    </div>
+</section>
+<!--导航下-->
+<section>
+    <div class="row">
+
+    </div>
+</section>
+<!--信息-->
+<section style="margin: 0 0 56px 0;">
+    <div class="sunCont" style="">
+        <div class="sunContA">
+           <a href="../text12.html">
+               <div class="sunContAimg">
+                   <img src="../image/zhengwu/lanmuliebiao_1.png">
+               </div>
+               <h4>我区6名优秀人才获市政府通报表彰</h4>
+               <p>2017-10-20 14:06:00</p>
+           </a>
+        </div>
+        <div class="sunContA">
+           <a href="../text13.html">
+               <div class="sunContAimg">
+                   <img src="../image/zhengwu/lanmuliebiao_1.png"></div>
+               <h4>第四届汉江樱桃节将盛大开幕</h4>
+               <p>2017-10-24 11:33:10</p>
+           </a>
+        </div>
+
+    </div>
+    <div class="sunBox" style="display: none;">
+        <div class="sunMenu" style="height: 481px;">
+            <ul></ul>
+        </div>
+
+        <div class="sunContent" style="height: 481px;"></div>
+    </div>
+</section>
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script src="government.js"></script>
+</html>

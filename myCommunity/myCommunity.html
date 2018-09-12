@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>我的社区</title>
+    <script type="text/html" id="idxNotice-template">
+
+        {{each dataList as value i}}
+        <marquee behavior="scroll"  scrollamount="2">{{value.content}}</marquee>
+        {{/each}}
+
+    </script>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">我的社区</div>
+</header>
+<!--轮播图-->
+<section  style="margin-top: 50px;">
+    <div class="idxSwiper swiper-container">
+        <div class="swiper-wrapper" id="indexAds">
+            <div class="swiper-slide">
+               <a href="javascript:;">
+                   <img src="../image/shequ/banner.png">
+               </a>
+            </div>
+        </div>
+        <div class="swiper-pagination">
+
+        </div>
+    </div>
+</section>
+<!--公告-->
+<section>
+    <div class="idxNotice">
+        <img src="../image/tongzhi-2.png">
+        <ul class="line">
+            <li>
+
+            </li>
+        </ul>
+    </div>
+</section>
+<!--导航下-->
+<section>
+    <div class="row">
+        <!--<div class="col-xs-3">-->
+            <!--<a href="volunteer.html">-->
+                <!--<img src="../image/shequ/zhiyuanzhelianmeng.png">-->
+                <!--<p>志愿者联盟</p>-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div class="col-xs-3">-->
+            <!--<a href="people.html">-->
+                <!--<img src="../image/shequ/minzhuzizhi.png">-->
+                <!--<p> 民主自治</p>-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div class="col-xs-3">-->
+            <!--<a href="capital.html">-->
+                <!--<img src="../image/shequ/shequgongfuzijin.png">-->
+                <!--<p>社区共扶资金</p>-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div class="col-xs-3">-->
+            <!--<a href="pension.html">-->
+                <!--<img src="../image/shequ/yuyueguahao.png">-->
+                <!--<p>居家养老</p>-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div class="col-xs-3">-->
+            <!--<a href="activity.html">-->
+                <!--<img src="../image/shequ/shequhuodong.png">-->
+                <!--<p>社区活动</p>-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div class="col-xs-3">-->
+            <!--<a href="property.html">-->
+                <!--<img src="../image/shequ/shiwugongkai.png">-->
+                <!--<p>物业报修</p>-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div class="col-xs-3">-->
+            <!--<a href="affair.html">-->
+                <!--<img src="../image/shequ/wuyebaoxiu.png">-->
+                <!--<p>事务公开</p>-->
+            <!--</a>-->
+        <!--</div>-->
+        <!--<div class="col-xs-3">-->
+            <!--<a href="red.html">-->
+                <!--<img src="../image/shequ/heihongbangdan.png">-->
+                <!--<p>红黑榜单</p>-->
+            <!--</a>-->
+        <!--</div>-->
+
+    </div>
+</section>
+<!--信息-->
+<section style="margin: 0 0 56px 0;">
+    <div class="sunCont" style="">
+        <div class="sunContA">
+            <a href="../text8.html">
+                <div class="sunContAimg">
+                    <img src="../image/shequ/lanmuliebiao.png">
+                </div>
+                <h4>村民健康“守护神”</h4>
+                <p>2018-07-05</p>
+            </a>
+        </div>
+        <div class="sunContA">
+            <a href="../text9.html">
+                <div class="sunContAimg">
+                    <img src="../image/shequ/lanmuliebiao2.png"></div>
+                <h4>汉江强制拆除地锁27个 群众拍手称赞</h4>
+                <p>2018-07-04</p>
+            </a>
+        </div>
+
+    </div>
+</section>
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript" src="myCommunity.js"></script>
+</html>

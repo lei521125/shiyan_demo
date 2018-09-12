@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>在线学习</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">在线学习</div>
+</header>
+<!--信息-->
+<section style="padding-top:56px">
+    <div class="pg-main">
+        <div class="wrapper">
+            <div class="wrap">
+                <div class="tabs">
+                     <span class="part active">
+                         <a href="#" hidefocus="true">
+                           我的课程
+                         </a>
+                     </span>
+                    <span class="part">
+                        <a href="#" hidefocus="true">
+                           我的笔记
+                        </a>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="studyNum">
+        <h4></h4>
+        <select>
+            <option id="0">必修课程</option>
+            <option id="1">选修课程</option>
+        </select>
+    </div>
+</section>
+<section>
+    <div class="studyCon">
+        <!--<div class="studyCate">-->
+            <!--<a href="javascript:;"></a>-->
+            <!--<div class="studyTit">十九大关键词解读</div>-->
+            <!--<div class="studyCouse"><span>2</span>/12 学时</div>-->
+        <!--</div>-->
+    </div>
+</section>
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery/jquery.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="../js/zepto.min.js"></script>
+<script src="../js/swiper/idangerous.swiper.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $(function () {
+
+        // 轮播图
+        var idxSwiper = new Swiper('.idxSwiper', {
+            autoplay: 2000,//可选选项，自动滑动
+            loop    : true,
+            autoHeight: true,
+            prevButton:'.swiper-button-prev',
+            nextButton:'.swiper-button-next',
+            pagination : '.swiper-pagination',
+            paginationClickable :true,		//点切换
+            autoplayDisableOnInteraction : false  //操作后继续
+        });
+
+        $(".tabs span").click(function () {
+            $(".tabs span").removeClass('active');
+            $(this).addClass("active");
+            var studyIdx = $(this).index();
+
+            $(".studyNum").css("display",'none');
+            console.log(studyIdx);
+            if(studyIdx == 0){
+                myStudy();
+                $(".studyNum").css("display",'block');
+            }else if(studyIdx == 1){
+                myNote()
+            }
+        });
+        myStudy();
+        $('.studyNum select').change(function(){
+            myStudy();
+        });
+        function myStudy(){
+            // $(".studyCon").html("");
+            if(sessionStorage.getItem("appUserId")){
+                var myStudyType = $('.studyNum select').find('option:checked').index();
+                sessionStorage.setItem("myStudyType",myStudyType);
+                console.log(myStudyType);
+                $.get('http://59.152.38.197:8788/SmartHotelInterface/api/appUser/userKindsCate?requestUser=sxbctv&requestPassword=123456',{appUserId:sessionStorage.getItem("appUserId"),type:myStudyType},function(data){
+                    if(data.resultCode && data.resultCode == 200){
+                        console.log(data);
+                        $('.studyCon').html('');
+                        if(myStudyType == 0){
+                            $('.studyNum h4').html('必修课程（'+data.totalNum+'）');
+                        }else if(myStudyType == 1){
+                            $('.studyNum h4').html('选修课程（'+data.totalNum+'）');
+                        }
+                        // $(".studyNum h4").html("全部课程("+ data.totalNum + ")");
+                        var arr = data.dataList;
+                        arr = bubbleSort(arr);
+                        $.each(arr,function(index,el){
+                            $('.studyCon').append(`
+                            <div class="studyCate" name="${el.id}">
+                                 <a href="javascript:;"></a>
+                                 <div class="studyTit">${el.name}</div>
+                                 <div class="studyCouse"><span></span> / <i></i>学时</div>
+                             </div>
+                        `)
+                            //分类学时查询
+                            CateStudyTime(index);
+                        });
+                        function CateStudyTime(index){
+                            var CateIdx = $(".studyCon .studyCate").eq(index).attr('name');
+                            // console.log(CateIdx);
+                            $.get('http://59.152.38.197:8788/SmartHotelInterface/api/appUser/getPlanByKindsOrCate?requestUser=sxbctv&requestPassword=123456',{appUserId:sessionStorage.getItem("appUserId"),categroyId:CateIdx},function(data){
+                                if(data.resultCode && data.resultCode == 200){
+                                    // console.log(data);
+                                    $(".studyCon .studyCate").eq(index).find('span').html(data.data.studiedHours);
+                                    $(".studyCon .studyCate").eq(index).find("i").html(data.data.needHours);
+                                }
+
+                            })
+                        }
+                        $(".studyCon .studyCate").on("click",function(){
+                            var MenuId = $(this).attr('name');
+                            console.log(MenuId);
+                            sessionStorage.setItem('MenuId',MenuId);
+                            myVideo();
+                        })
+                    }
+                })
+            }
+
+        }
+
+        //课程分类下的课程
+        function myVideo(){
+            var myStudyGet = 'http://59.152.38.197:8788/SmartHotelInterface/api/appUser/userKinds?requestUser=sxbctv&requestPassword=123456';
+            $.get(myStudyGet,{appUserId:sessionStorage.getItem("appUserId"),kindsCateId:sessionStorage.getItem('MenuId'),type:sessionStorage.getItem("myStudyType")},
+                function(data){
+                    if(data.resultCode && data.resultCode == 200){
+                        console.log(data);
+                        $(".studyNum").css("display",'none');
+                        $(".studyCon").html("");
+                        $(window).scrollTop(0);
+                        $.each(data.dataList,function(index,el){
+                            $(".studyCon").append(`
+                             <div class="studyCourse" name="${el.id}">
+                                 <a href="javascript:;"></a>
+                                 <div class="courseTit">${el.name}</div>
+                                 <div class="courseDegree"></div>
+                             </div>
+                        `)
+                            var kinds = el.id;
+                            $.get('http://59.152.38.197:8788/SmartHotelInterface/api/appUser/getPlanByKindsOrCate?requestUser=sxbctv&requestPassword=123456',{appUserId:sessionStorage.getItem("appUserId"),kindsId:kinds},function(data){
+                                // console.log(data);
+                                var needHours = data.data.needHours;
+                                var studiedHours = data.data.studiedHours;
+                                if(studiedHours == 0 ){
+                                    $(".studyCourse .courseDegree").eq(index).html("");
+                                }else if(studiedHours < needHours ){
+                                    $(".studyCourse .courseDegree").eq(index).html("未学完");
+                                    $(".studyCourse .courseDegree").eq(index).css("color","red");
+                                }else if(studiedHours >= needHours){
+                                    $(".studyCourse .courseDegree").eq(index).html("已学完");
+                                    $(".studyCourse .courseDegree").eq(index).css("color","green");
+                                }
+                            })
+                        });
+                    $(".studyCourse").on("click",function(){
+                        var videoId = $(this).attr('name');
+                        sessionStorage.setItem('videoId',videoId);
+                        window.location.href="video.html";
+                    })
+
+                    }
+                })
+        }
+        //我的笔记
+        function myNote(){
+        //如果用户已经登录
+            $(".studyCon").html("");
+            var myNoteGet = 'http://59.152.38.197:8788/SmartHotelInterface/api/appUser/myNote?requestUser=sxbctv&requestPassword=123456';
+            $.get(myNoteGet,{appUserId:sessionStorage.getItem("appUserId"),type:1},function(data){
+                if(data.resultCode && data.resultCode == 200){
+                    console.log(data);
+                    $.each(data.dataList,function(index,el){
+                        $(".studyCon").append(`
+                            <div class="noteCate" name="${el.id}">
+                                 <h4>${el.name}</h4>
+                            </div>
+                        `)
+                    });
+
+                    $(".noteCate h4").on("click",function(){
+                        var noteCteId = $(this).parents(".noteCate").attr("name");
+                        sessionStorage.setItem("noteCteId",noteCteId);
+                        window.location.href="myNoteKinds.html";
+                    })
+                }
+            })
+        }
+        function bubbleSort(arr) {
+            var len = arr.length;
+            for(var i = 0; i < len; i++) {
+                for(var j = 0; j < len - 1 - i; j++) {
+                    var a = arr[j].id;
+                    var b = arr[j+1].id;
+                    //console.log(a+'---'  +b);
+                    if(a < b) {        //相邻元素两两对比
+                        var temp = arr[j+1];        //元素交换
+                        arr[j+1] = arr[j];
+                        arr[j] = temp;
+                    }
+                }
+            }
+
+            return arr;
+        }
+
+
+
+
+
+
+
+
+    })
+
+</script>
+</html>

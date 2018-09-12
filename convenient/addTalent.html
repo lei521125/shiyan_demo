@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <link rel="stylesheet" href="../css/lCalendar.css">
+    <title>达人信息</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">达人信息</div>
+</header>
+<div class="talentMessCon" style="padding:50px 0 60px 0">
+    <ul>
+        <li>
+            <span class="textSpace">用户名:</span>
+            <input type="text" placeholder="请输入用户名">
+        </li>
+        <li>
+            <span class="textSpace">姓名:</span>
+            <input type="text" placeholder="请输入姓名(必填)">
+        </li>
+        <li>
+            <span class="textSpace">艺名:</span>
+            <input type="text" placeholder="请输入艺名">
+        </li>
+        <li>
+            <span>电话号码:</span>
+            <input type="text" placeholder="请输入电话号码(必填)">
+        </li>
+        <li>
+            <span>家庭地址:</span>
+            <input type="text" placeholder="请输入家庭地址">
+        </li>
+        <li>
+            <span>个人风采</span>
+            <button>上传图片</button>
+            <div class="personalImgs">
+                <img src="../image/news1.jpg" alt="">
+                <img src="../image/news1.jpg" alt="">
+                <img src="../image/news1.jpg" alt="">
+            </div>
+        </li>
+        <li>
+            <span>特长简介:</span>
+            <textarea cols="30" rows="3" placeholder="特长介绍...(必填)"></textarea>
+            <!--<textarea name="" id="" cols="30" rows="10"></textarea>-->
+        </li>
+
+    </ul>
+</div>
+<div class="addTalentMessFooter">
+    <input type="button" value="提交">
+</div>
+
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script src="../js/lCalendar.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $(".addTalentMessFooter input").on("click",function(){
+            var userName    = $(".talentMessCon li").eq(0).find("input").val();
+            var  talentName = $(".talentMessCon li").eq(1).find("input").val();
+            var  stageName  = $(".talentMessCon li").eq(2).find("input").val();
+            var  phone      = $(".talentMessCon li").eq(3).find("input").val();
+            var  address    = $(".talentMessCon li").eq(4).find("input").val();
+            var  Introduction = $(".talentMessCon li").eq(6).find("textarea").val();
+            var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+            if(!myreg.test(phone)) {
+                alert("请输入正确的手机号");
+                return false;
+            }
+            console.log(userName,talentName,stageName,phone,address,Introduction);
+            if( talentName == "" || phone == "" || Introduction == ""){
+                alert("信息未填完，请继续填写")
+            }else{
+                $.post("http://59.152.38.197:8188/ShoppingInterface/hscm/common/addFindTalent?requestUser=sxbctv&requestPassword=123456",{realName:talentName,phone:phone,introduction:Introduction,address:address,appUserId:sessionStorage.getItem("appUserId"),hotelId:sessionStorage.getItem("itemId"),stageName:stageName,name:userName},function(data){
+                    console.log(data);
+                })
+            }
+        })
+    })
+
+
+
+
+</script>
+</html>

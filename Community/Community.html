@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>社区E通</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">社区E通</div>
+</header>
+<!--轮播图-->
+<section style="padding-top:50px">
+    <div class="idxSwiper swiper-container">
+        <div class="swiper-wrapper" id="indexAds">
+            <div class="swiper-slide">
+                <a href="javascript:;">
+                    <img src="../image/e/banner.png">
+                </a>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+<!--公告-->
+<section>
+    <div class="idxNotice">
+        <img src="../image/tongzhi-2.png">
+        <ul class="line">
+            <marquee behavior="scroll"  scrollamount="3">党建引领聚合力，多元共治建家园</marquee>
+        </ul>
+    </div>
+</section>
+<!--导航下-->
+<section>
+    <div class="row">
+        <div class="col-xs-4">
+            <a href="ThreeDimensional.html">
+                <img src="../image/e/椭圆50.png">
+                <p>三维地图</p>
+            </a>
+        </div>
+    </div>
+</section>
+<!--<section>
+    <div class="three-map">
+        <div class="pic-one">
+            <a href="ThreeDimensional.html">
+                <img src="../image/e/椭圆50.png">
+                <p>三维地图</p>
+            </a>
+        </div>
+        <div class="pic-two">
+            <a href="javascript:;">
+
+            </a>
+        </div>
+        <div class="pic-three">
+            <a href="javascript:;">
+            </a>
+        </div>
+    </div>
+</section>-->
+<!--信息-->
+<section style="margin: 0 0 56px 0;">
+    <div class="sunCont" style="">
+        <div class="sunContA">
+            <a href="../text8.html">
+                <div class="sunContAimg">
+                    <img src="../image/shequ/lanmuliebiao.png">
+                </div>
+                <h4>村民健康“守护神”</h4>
+                <p>2018-07-05</p>
+            </a>
+        </div>
+        <div class="sunContA">
+            <a href="../text9.html">
+                <div class="sunContAimg">
+                    <img src="../image/shequ/lanmuliebiao2.png"></div>
+                <h4> 汉江强制拆除地锁27个 群众拍手称赞</h4>
+                <p>2018-07-04</p>
+            </a>
+        </div>
+
+    </div>
+</section>
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    // 导航条
+    var menuSwiper = new Swiper('.menuSwiper', {
+        slidesPerView: 5,
+        paginationClickable: true,
+        freeMode: true    //自动贴合
+    });
+    $('.menuSwiper a').eq(0).addClass('active');
+    $('.menuSwiper a').on('click',function(){
+        $('.menuSwiper a').removeClass('active');
+        $(this).addClass('active');
+    });
+    // 轮播图
+    var idxSwiper = new Swiper('.idxSwiper', {
+        autoplay: 2000,//可选选项，自动滑动
+        loop    : true,
+        autoHeight: true,
+        prevButton:'.swiper-button-prev',
+        nextButton:'.swiper-button-next',
+        pagination : '.swiper-pagination',
+        paginationClickable :true,		//点切换
+        autoplayDisableOnInteraction : false,    //操作后继续
+    });
+</script>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>便民服务</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">便民服务</div>
+</header>
+<!--轮播图-->
+<section style="padding-top:50px">
+    <div class="idxSwiper swiper-container">
+        <div class="swiper-wrapper" id="indexAds">
+            <div class="swiper-slide">
+                <a href="javascript:;">
+                    <img src="../image/bianmin/banner.png">
+
+                </a>
+            </div>
+        </div>
+        <div class="swiper-pagination">
+
+        </div>
+    </div>
+</section>
+<!--公告-->
+<section>
+    <div class="idxNotice">
+        <img src="../image/tongzhi-2.png">
+        <ul class="line">
+            <marquee behavior="scroll"  scrollamount="3">党建引领聚合力，多元共治建家园</marquee>
+        </ul>
+    </div>
+</section>
+<!--导航下-->
+<section>
+    <div class="row">
+        <div class="col-xs-4">
+            <a href="pay.html">
+                <img src="../image/bianmin/bianjiejiaofei.png">
+                <p>便捷缴费</p>
+            </a>
+        </div>
+        <div class="col-xs-4">
+            <a href="appointment.html">
+                <img src="http://59.152.38.197/smart_file/sys_file/hotel/68/columns/a6ca153b-9b51-4911-a267-684cc937d871.png">
+                <p>预约挂号</p>
+            </a>
+        </div>
+        <div class="col-xs-4">
+            <a href="fresh.html">
+                <img src="../image/bianmin/shengxianruhu.png">
+                <p>生鲜入户</p>
+            </a>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-xs-4">
+            <a href="seek.html">
+                <img src="../image/bianmin/xunzhaodaren.png">
+                <p>寻找达人</p>
+            </a>
+        </div>
+        <div class="col-xs-4">
+            <a href="flea.html">
+                <img src="../image/bianmin/tiaosaoshichang.png">
+                <p>跳蚤市场</p>
+            </a>
+        </div>
+        <div class="col-xs-4">
+            <a href="on-line.html">
+                <img src="../image/bianmin/zaixianshangpu.png">
+                <p>在线商铺</p>
+            </a>
+        </div>
+    </div>
+
+</section>
+<!--信息-->
+<section style="margin: 0 0 56px 0;">
+    <div class="sunCont" style="">
+        <div class="sunContA">
+            <a href="../text7.html">
+                <div class="sunContAimg">
+                    <img src="../image/news6.jpg">
+                </div>
+                <h4>汉江强制拆除地锁27个 群众拍手称赞</h4>
+                <p>2018-5-21 14:00:00</p>
+            </a>
+        </div>
+        <div class="sunContA">
+           <a href="../text6.html">
+               <div class="sunContAimg">
+                   <img src="../image/bianmin/lanmuliebiao.png">
+               </div>
+               <h4>阳光社区公益课堂开始了</h4>
+               <p>2017-10-20 14:06:00</p>
+           </a>
+        </div>
+
+    </div>
+</section>
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var indexUrl = window.location.href;
+        var indexIdx = indexUrl.indexOf('functionId=');
+        var functionId = indexUrl.substring(indexIdx+11,indexIdx.length);
+        console.log(functionId);
+        // 导航条
+        var menuSwiper = new Swiper('.menuSwiper', {
+            slidesPerView: 5,
+            paginationClickable: true,
+            freeMode: true    //自动贴合
+        });
+        $('.menuSwiper a').eq(3).addClass('active');
+        $('.menuSwiper a').on('click',function(){
+            $('.menuSwiper a').removeClass('active');
+            $(this).addClass('active');
+        });
+        // 轮播图
+        var idxSwiper = new Swiper('.idxSwiper', {
+            autoplay: 2000,//可选选项，自动滑动
+            loop    : true,
+            autoHeight: true,
+            prevButton:'.swiper-button-prev',
+            nextButton:'.swiper-button-next',
+            pagination : '.swiper-pagination',
+            paginationClickable :true,		//点切换
+            autoplayDisableOnInteraction : false,    //操作后继续
+        });
+        //请求二级栏目的内容
+        $.get("http://59.152.38.197:8188/HiSuOpenAPI/api/pubInterface/portal?requestUser=sxbctv&requestPassword=123456",{itemId:sessionStorage.getItem("itemId")},function(data){
+            if(data.resultCode && data.resultCode == 200){
+                console.log(data);
+                for(var i=0;i<data.dataList.length;i++){
+                    if( functionId == data.dataList[i].id){
+                        for(var j=0;j<data.dataList[i].subList.length;j++){
+                            $(".row .col-xs-4").eq(j).attr("id",data.dataList[i].subList[j].id);
+                            $(".row .col-xs-4").eq(j).attr("name",data.dataList[i].subList[j].functionId);
+                        }
+                    }
+                }
+                $(".row .col-xs-4").on("click",function(){
+                    var secondKindId = $(this).attr("id");
+                    var secondFuncId = $(this).attr("name");
+                    sessionStorage.setItem("secondKindId",secondKindId);
+                    sessionStorage.setItem("secondFuncId",secondFuncId);
+                })
+            }
+        })
+
+    })
+
+
+
+
+</script>
+</html>

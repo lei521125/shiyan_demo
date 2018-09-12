@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>商铺详情</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">商铺详情</div>
+</header>
+<!--轮播图-->
+<!--信息-->
+<section style="margin: 55px 0 56px 0;">
+    <div class="info-shop">
+        <h3>“玩艺生活”手工制作坊</h3>
+        <p class="adress">地址：万达金街1、204</p>
+        <p class="phone">电话：13886858284</p>
+        <p class="shopDetail">店铺介绍：</p>
+
+        <img src="../image/bianmin/shop1.png">
+        <p class="shop-info">商品介绍</p>
+        <img src="../image/bianmin/shop2.png">
+    </div>
+</section>
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    // 导航条
+    var menuSwiper = new Swiper('.menuSwiper', {
+        slidesPerView: 3,
+        paginationClickable: true,
+        freeMode: true    //自动贴合
+    });
+    $('.menuSwiper a').eq(2).addClass('active');
+    $('.menuSwiper a').on('click',function(){
+        $('.menuSwiper a').removeClass('active');
+        $(this).addClass('active');
+    });
+    // 轮播图
+    var idxSwiper = new Swiper('.idxSwiper', {
+        autoplay: 2000,//可选选项，自动滑动
+        loop    : true,
+        autoHeight: true,
+        prevButton:'.swiper-button-prev',
+        nextButton:'.swiper-button-next',
+        pagination : '.swiper-pagination',
+        paginationClickable :true,		//点切换
+        autoplayDisableOnInteraction : false,    //操作后继续
+    });
+
+
+
+</script>
+</html>

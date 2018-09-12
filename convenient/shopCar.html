@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>购物车列表</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">购物车列表</div>
+</header>
+<div class="shopCarCon"  style="padding:50px 0">
+
+
+</div>
+
+<!--底部-->
+<div class="footer">
+    <div class="quan">全选:</div>
+    <div class="shopCheck shopCheckAll">
+        <input type="checkbox" >
+    </div>
+    <div class="totalNum">
+        共 <i></i>件
+    </div>
+    <div class="totalPrice">
+        ￥: 0
+    </div>
+    <button class="confirm">确定</button>
+    <button class="delete">删除</button>
+</div>
+
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        // sessionStorage.removeItem("buyProductIds");
+      $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/shoppingcart?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId")},function(data){
+          console.log(data);
+          var img = sessionStorage.getItem("www");
+          if(data.resultCode && data.resultCode == 200){
+              $.each(data.dataList,function(index,el){
+                  $(".shopCarCon").append(`
+                     <div class="shopCarList" name="${el.id}" title="${el.cartId}">
+                        <div class="shopCheck shopsACheck">
+                            <input type="checkbox" >
+                        </div>
+                        <div class="shopImg">
+                            <img src="${img}${el.icon}" alt="">
+                        </div>
+                        <div class="shopDetail">
+                            <h4>${el.name}</h4>
+                            <p>规格：${el.spec}</p>
+                            <i>￥<span>${el.price}</span></i><br>
+                            <span>Fr:${el.module}</span>
+                        </div>
+                        <div class="detailNum">
+                            <span class="reduce">-</span>
+                            <div class="number">${el.cartNum}</div>
+                            <span class="add">+</span>
+                        </div>
+                    </div>
+                  `)
+              });
+              $(".shopImg").on("click",function(){
+                  var productId = $(this).parents(".shopCarList").attr("name");
+                  window.location.href="productDetail.html?productId="+productId;
+              });
+              //点击改变数量
+              $(".detailNum .reduce").on("click",function(){
+                  if($(this).parents(".shopCarList").find(".shopsACheck").find("input").attr("checked") == "checked"){
+                      var val = parseInt($(this).parents(".detailNum").find(".number").html()) ;
+                      var productId =$(this).parents(".shopCarList").attr("name");
+                      if(val>1){
+                          $(this).parents(".detailNum").find(".number").html(val-1);
+                          var proNum = parseInt($(this).parents(".detailNum").find(".number").html());
+                          shopUpdata (productId,proNum);
+                          num();
+                      }else{
+                          return false
+                      }
+                  }else{
+                      alert("请先选择商品!")
+                  }
+              });
+              $(".detailNum .add").on("click",function(){
+                  if($(this).parents(".shopCarList").find(".shopsACheck").find("input").attr("checked") == "checked"){
+                      var val = parseInt($(this).parents(".detailNum").find(".number").html()) ;
+                      var productId =$(this).parents(".shopCarList").attr("name");
+                      $(this).parents(".detailNum").find(".number").html(val+1);
+                      var proNum = parseInt($(this).parents(".detailNum").find(".number").html());
+                      shopUpdata (productId,proNum);
+                      num();
+                  }else{
+                      alert("请先选择商品!")
+                  }
+              });
+
+              //点击是否选中
+              $(".shopCheck").on("click",function(){
+                  var check = $(this);
+                  check.hasClass("active") ? check.removeClass("active").find("input").attr("checked",false) : check.addClass("active").find("input").attr("checked",true);
+                  if(check.hasClass("shopCheckAll")) allCheck(check);
+                  if(check.hasClass("shopsACheck")) shopsACheck(check);
+                  num();
+              })
+          }
+      });
+        //调整购物车产品数量;
+        function shopUpdata (productId,proNum){
+            $.get('http://59.152.38.197:8990/ShoppingInterface/hscm/common/updateShoppingcart?requestUser=sxbctv&requestPassword=123456', {productId : productId, appUserId : sessionStorage.getItem('appUserId'), num : proNum}, function(data) {
+                console.log(data);
+            });
+        }
+        //全部选中
+        function allCheck(check){
+            !check.hasClass("active") ? $(".shopCarCon .shopCheck").removeClass("active").find("input").attr("checked",false) : $(".shopCarCon .shopCheck").addClass("active").find("input").attr("checked",true);
+        }
+        //个别产品选中
+        function shopsACheck(check){
+            if(!check.hasClass("active")){
+                check.removeClass("active").find("input").attr("checked",false);
+                $(".shopCheckAll").removeClass("active").find("input").attr("checked",false);
+            }else if(check.hasClass("active")){
+                var shopsACheck = $(".shopsACheck");
+                var shopsACheckActive = $(".shopsACheck.active");
+                // console.log(shopsACheck.length);
+                // console.log(shopsACheckActive.length);
+                if( shopsACheck.length == shopsACheckActive.length){
+                    $(".shopsACheck").find("input").attr("checked",true);
+                    $(".shopCheckAll").addClass("active").find("input").attr("checked",true);
+                }
+            }
+        }
+
+        //计算产品价格和数量;
+        function num(){
+            var num = 0;
+            var money = 0;
+            $.each($(".shopCarList"),function(index,el){
+                var el = $(this);
+                if(el.find(".shopsACheck").find("input").attr("checked") == "checked"){
+                    var val = parseInt(el.find(".detailNum").find(".number").html());
+                    var value = parseFloat(el.find(".shopDetail i span").html());
+                    // console.log(val,value);
+                    num += 1*val;
+                    money += val * value;
+                    // console.log(val,money);
+                }
+            });
+            money = money.toFixed(2);
+            $(".footer .totalNum i").html(num);
+            $(".footer .totalPrice").html("￥"+money);
+        }
+
+        //删除商品
+        $(".delete").on("click",function(){
+            delProCartIds();
+        });
+
+        function delProCartIds() {
+            var delProCartIds = [];
+            $.each($(".shopCarList"),function(index,el){
+                 var el = $(this);
+                 if(el.find(".shopsACheck").find("input").attr("checked") == "checked"){
+                     var cartId = el.attr("title");
+                     delProCartIds.push(cartId);
+                 }
+            });
+            var cartIds = delProCartIds.toString();
+            sessionStorage.setItem("cartIds",cartIds);
+            console.log(cartIds);
+            // console.log(typeof(cartIds))
+            $.post("http://59.152.38.197:8990/ShoppingInterface/hscm/common/deleteShoppingcart?requestUser=sxbctv&requestPassword=123456",{cartIds:sessionStorage.getItem("cartIds")},function(data){
+                console.log(data);
+                alert("删除成功");
+                sessionStorage.removeItem("cartIds");
+                history.go(0);
+            })
+        }
+
+        //提交商品
+        $(".confirm").on("click",function(){
+            var proNum = $(".totalNum i").html();
+            if(proNum == "" || proNum ==0){
+                alert("请选择商品")
+            }else{
+                var confirmProductIds =[];
+                var confirmProductCartIds = [];
+                $.each($(".shopCarList"),function(index,el){
+                    var el = $(this);
+                    var proNum = el.find(".detailNum .number").html();
+                    var confirmProductCartId =el.attr("title");
+                    console.log(proNum);
+                    if(el.find(".shopsACheck").find("input").attr("checked") == "checked"){
+                        var productId = el.attr("name");
+                        confirmProductIds.push(productId);
+                        confirmProductCartIds.push(confirmProductCartId);
+                    }
+                });
+                var buyProductIds = confirmProductIds.toString();
+                var confirmProductCartIds = confirmProductCartIds.toString(confirmProductCartIds);
+                console.log(buyProductIds);
+                console.log(confirmProductCartIds);
+                // console.log(typeof (confirmProductNum));
+                sessionStorage.setItem("buyProductIds",buyProductIds);
+                sessionStorage.setItem("confirmProductCartIds",confirmProductCartIds);
+                window.location.href="order.html";
+            }
+        })
+
+
+
+
+    })
+</script>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>社区E通</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">社区E通</div>
+</header>
+<!--信息-->
+<section style="margin: 0 0 56px 0;">
+    <div class="sunCont" style="">
+        <div class="sunContA" style="margin-top: 50px;">
+            <div class="sunContAimg">
+                <img src="../image/e/矩形4拷贝5.png">
+            </div>
+            <h4>7月1日起我国降低国家重大水利工程建设基金征收标准</h4>
+            <p>2018-06-27 14:06:00</p>
+        </div>
+        <div class="sunContA">
+            <div class="sunContAimg">
+                <img src="../image/e/矩形4拷贝5_39.png"></div>
+            <h4>国务院关于修改部分行政法规的决定</h4>
+            <p>2018-06-27 11:33:10</p>
+        </div>
+    </div>
+</section>
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    // 导航条
+    var menuSwiper = new Swiper('.menuSwiper', {
+        slidesPerView: 3,
+        paginationClickable: true,
+        freeMode: true    //自动贴合
+    });
+    $('.menuSwiper a').eq(0).addClass('active');
+    $('.menuSwiper a').on('click',function(){
+        $('.menuSwiper a').removeClass('active');
+        $(this).addClass('active');
+    });
+
+</script>
+</html>

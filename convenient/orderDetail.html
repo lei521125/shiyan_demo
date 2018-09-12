@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>订单详情</title>
+</head>
+<body>
+<!--头部-->
+<header  style="background-color: #707070">
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">订单详情</div>
+</header>
+<div class="orderDetail"  style="padding-top:50px">
+    <div class="detail">
+        <ul>
+            <li>
+                <span>订单编号:</span>
+                <i></i>
+            </li>
+            <li>
+                <span>下单时间:</span>
+                <i></i>
+            </li>
+            <li>
+                <span>订单状态:</span>
+                <i></i>
+            </li>
+            <li>
+                <span>支付状态:</span>
+                <i></i>
+            </li>
+            <li>
+                <span>配送方式:</span>
+                <i></i>
+            </li>
+            <li>
+                <span>联系人:</span>
+                <i></i>
+            </li>
+            <li>
+                <span>手机号:</span>
+                <i></i>
+            </li>
+            <li>
+                <span>收货地址:</span>
+                <i></i>
+            </li>
+            <li>
+                <span>订单备注:</span>
+                <i></i>
+            </li>
+            <li>
+                <span>支付方式:</span>
+                <i></i>
+            </li>
+        </ul>
+    </div>
+
+    <div class="productList">
+        <h4></h4>
+    </div>
+
+    <div class="payMoney">
+        <h4>费用详情</h4>
+        <p>
+            <span>商品金额</span>
+            <i></i>
+        </p>
+        <p>
+            <span>应付金额</span>
+            <i></i>
+        </p>
+    </div>
+</div>
+<div class="payFooter">
+    <button>支付</button>
+</div>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        //获取订单详情、
+        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/productOrderDetail?requestUser=sxbctv&requestPassword=123456",{orderId:sessionStorage.getItem("orderId")},function(data){
+            console.log(data);
+            $(".detail ul li").eq(0).find("i").html(data.data.orderNo);
+            $(".detail ul li").eq(1).find("i").html(data.data.createTime);
+            //订单状态
+            if(data.data.orderStatus == 0){
+                $(".detail ul li").eq(2).find("i").html("待确认");
+            }else if(data.data.orderStatus == 1){
+                $(".detail ul li").eq(2).find("i").html("已确认");
+            }else if(data.data.orderStatus == 2){
+                $(".detail ul li").eq(2).find("i").html("已配送");
+            }else if(data.data.orderStatus == 3){
+                $(".detail ul li").eq(2).find("i").html("客户取消");
+            }else if(data.data.orderStatus == 4){
+                $(".detail ul li").eq(2).find("i").html("订单关闭");
+            }
+            $(".detail ul li").eq(2).find("i").css("color","rgb(255, 0, 0)");
+            //支付状态
+            if(data.data.payStatus == 0){
+                $(".detail ul li").eq(3).find("i").html("未支付");
+            }else if(data.data.payStatus == 1){
+                $(".detail ul li").eq(3).find("i").html("现金已支付");
+            }else if(data.data.payStatus == 2){
+                $(".detail ul li").eq(3).find("i").html("扣款成功");
+            }else if(data.data.payStatus == 3){
+                $(".detail ul li").eq(3).find("i").html("扣款失败");
+            }
+            $(".detail ul li").eq(3).find("i").css("color","rgb(255, 0, 0)");
+            //配送方式
+            if(data.data.sendType == 0){
+                $(".detail ul li").eq(4).find("i").html("邮寄");
+            }else if(data.data.sendType == 1){
+                $(".detail ul li").eq(4).find("i").html("到店自提");
+            }
+            $(".detail ul li").eq(4).find("i").css("color","rgb(42, 1, 255)");
+
+            $(".detail ul li").eq(5).find("i").html(data.data.receiver);
+            $(".detail ul li").eq(6).find("i").html(data.data.phone);
+            $(".detail ul li").eq(7).find("i").html(data.data.address);
+            $(".detail ul li").eq(8).find("i").html(data.data.remark);
+            //支付方式
+            if(data.data.payType == 0){
+                $(".detail ul li").eq(9).find("i").html("货到付款");
+            }else if(data.data.payType == 1){
+                $(".detail ul li").eq(9).find("i").html("支付宝支付");
+            }else if(data.data.payType == 2){
+                $(".detail ul li").eq(9).find("i").html("微信支付");
+            }else if(data.data.payType == 3){
+                $(".detail ul li").eq(9).find("i").html("银联支付");
+            }else if(data.data.payType == 4){
+                $(".detail ul li").eq(9).find("i").html("现金支付");
+            }else if(data.data.payType == 5){
+                $(".detail ul li").eq(9).find("i").html("余额支付");
+            }
+            $(".detail ul li").eq(9).find("i").css("color","rgb(255, 0, 0)");
+            $(".productList h4").html(data.data.storeName);
+            $.each(data.data.productList,function(index,el){
+                var img = sessionStorage.getItem("www");
+                $(".productList").append(`
+                    <div class="product" id="${el.id}" name="${el.productId}">
+                        <div class="Img">
+                            <img src="${img}${el.icon}" alt="">
+                        </div>
+                        <div class="describ">
+                            <p>${el.name}</p>
+                            <p>
+                                <span>x ${el.num}</span>
+                                <span>￥${el.price}</span>
+                            </p>
+                        </div>
+                    </div>
+                `)
+            });
+            $(".payMoney p").eq(0).find("i").html("￥"+data.data.totalPrice);
+            $(".payMoney p").eq(1).find("i").html("￥"+data.data.totalPrice);
+
+
+
+
+
+
+
+
+
+
+        })
+
+    })
+</script>
+</html>

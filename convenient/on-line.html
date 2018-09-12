@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>在线商铺</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">在线商铺</div>
+</header>
+<!--信息-->
+<section style="padding-top: 50px;" >
+    <div class="onCont">
+        <div class="sunContE">
+            <img src="../image/vip2.png" alt="">
+            <span>智慧社区</span>
+            <p>
+                <span>NO:</span>
+                <span>ZH</span>
+                <span class="cardNum"></span>
+            </p>
+        </div>
+        <h4>商铺列表:</h4>
+        <div class="storeCon">
+
+        </div>
+    </div>
+
+</section>
+
+
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $(function(){
+        //获取卡片编码
+        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/queryCardNum?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId")},function(data){
+            console.log(data);
+            var cardNum = data.data;
+            $(".sunContE .cardNum").html(cardNum);
+        });
+
+        //获取商铺列表
+        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/storeList?requestUser=sxbctv&requestPassword=123456",{cityId:sessionStorage.getItem("cityId"),itemCode:sessionStorage.getItem("itemCode")},function(data){
+            console.log(data);
+            if(data.resultCode && data.resultCode == 200){
+                if(data.dataList.length == 0){
+                    $(".storeCon").html("目前暂无商铺...");
+                    $(".storeCon").css("padding-left","4%");
+                    $(".storeCon").css("padding-right","4%");
+                    $(".storeCon").css("padding-top","5%");
+                    $(".storeCon").css("font-size","16px");
+                    $(".storeCon").css("color","#ccc");
+                    $(".storeCon").css("text-align","center");
+                }else{
+                    var ImgSrc="http://59.152.38.197:8990";
+                    $.each(data.dataList,function(index,el){
+                        $(".storeCon").append(`
+                        <div class="storeList" id="${el.id}">
+                            <div class="storeImg">
+                                <img src="${ImgSrc}${el.icon}" alt="">
+                            </div>
+
+                            <div class="storeMess">
+                                <h4>${el.name}</h4>
+                                <p>
+                                    <i></i>
+                                    <span>${el.tel}</span>
+                                </p>
+                                <p>
+                                    <i></i>
+                                    <span>${el.address}</span>
+                                </p>
+                                <p>
+                                    <i></i>
+                                    <span>服务时间 <i>${el.serviceStartTime} - ${el.serviceEndTime}</i> </span>
+                                </p>
+                            </div>
+                        </div>
+                    `)
+                    });
+                    $(".storeList").on("click",function(){
+                        var storeId = $(this).attr("id");
+                        console.log(storeId);
+                        sessionStorage.setItem("storeId",storeId);
+                        window.location.href="storeActive.html"
+                    })
+                }
+
+            }
+        })
+    })
+
+
+
+</script>
+</html>

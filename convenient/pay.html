@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>便捷缴费</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">便捷缴费</div>
+</header>
+<!--轮播图-->
+<section style="margin: 50px 0 10px 0;">
+    <div class="idxSwiper swiper-container">
+        <div class="swiper-wrapper" id="indexAds">
+            <div class="swiper-slide">
+              <a href="javascript:;">
+                  <img src="../image/bianmin/banner_39.png">
+              </a>
+            </div>
+        </div>
+        <div class="swiper-pagination">
+
+        </div>
+    </div>
+</section>
+<!--信息-->
+<div class="row">
+    <div class="col-xs-4">
+        <a href="payWater.html">
+            <img src="../image/bianmin/bianjiejiaofei.png">
+            <p>生活缴费</p>
+        </a>
+    </div>
+    <div class="col-xs-4">
+        <a href="javascript:;">
+            <img src="../image/bianmin/shengxianruhu.png">
+            <p>物业费</p>
+        </a>
+    </div>
+    <div class="col-xs-4">
+        <a href="car.html">
+            <img src="../image/bianmin/xunzhaodaren.png">
+            <p>停车费</p>
+        </a>
+    </div>
+</div>
+<!--公告-->
+<div class="notice">
+    <p class="not">公告 :</p>
+    <span>请广大用户及时缴纳各类费用，同时节约资源，爱护环境提倡环保，做文明人、树文明形象、共同创建和谐美丽城市，推动社区发展，提高共同生活质量。请广大用户及时缴纳各类费用，同时节约资源，爱护环境提倡环保，做文明人、树文明形象、共同创建和谐美丽城市，推动社区发展，提高共同生活质量。请广大用户及时缴纳各类费用，同时节约资源，爱护环境提倡环保，做文明人、树文明形象、共同创建和谐美丽城市，推动社区发展，提高共同生活质量。</span>
+</div>
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    // 导航条
+    var menuSwiper = new Swiper('.menuSwiper', {
+        slidesPerView: 3,
+        paginationClickable: true,
+        freeMode: true    //自动贴合
+    });
+    $('.menuSwiper a').eq(2).addClass('active');
+    $('.menuSwiper a').on('click',function(){
+        $('.menuSwiper a').removeClass('active');
+        $(this).addClass('active');
+    });
+    // 轮播图
+    var idxSwiper = new Swiper('.idxSwiper', {
+        autoplay: 2000,//可选选项，自动滑动
+        loop    : true,
+        autoHeight: true,
+        prevButton:'.swiper-button-prev',
+        nextButton:'.swiper-button-next',
+        pagination : '.swiper-pagination',
+        paginationClickable :true,		//点切换
+        autoplayDisableOnInteraction : false,    //操作后继续
+    });
+
+
+
+</script>
+</html>

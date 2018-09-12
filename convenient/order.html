@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>确认订单</title>
+</head>
+<body>
+<!--头部-->
+<header  style="background-color: #707070">
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">确认订单</div>
+</header>
+<div class="orderCon"  style="padding-top:50px">
+    <div class="aDress">
+        <!--<p>请选择收货地址</p>-->
+        <!--<div class="defaultDress">-->
+            <!--<p>-->
+                <!--<span>姓名:张三</span>-->
+                <!--<i>电话:15594843256</i>-->
+            <!--</p>-->
+            <!--<h4>收货地址:陕西省西安市莲湖区土门街道</h4>-->
+        <!--</div>-->
+    </div>
+    <div class="orderType">
+        <span>配送方式:</span>
+        <div class="modeRadio">
+            <div class="active" name="0">
+                <input type="radio">
+            </div>
+            <span>配送邮寄</span>
+        </div>
+        <div class="modeRadio">
+            <div name="1">
+                <input type="radio">
+            </div>
+            <span>到店自提</span>
+        </div>
+    </div>
+    <div class="orderProducts">
+        <!--<div class="product">-->
+            <!--<div class="proImg">-->
+                <!--<img src="http://zhsq.sxbcic.com/Shopping_Files/goods_img_folder/small_folder/2551073d-7a63-416f-ba20-40f82ed81270.jpg" alt="">-->
+            <!--</div>-->
+            <!--<div class="proDetail">-->
+                <!--<h4>好大米</h4>-->
+                <!--<p>规格：250g</p>-->
+                <!--<i>￥<span>45</span></i><br>-->
+                <!--<span>来源:米面粮油</span>-->
+            <!--</div>-->
+            <!--<div class="proNum">-->
+                <!--<span class="reduce">-</span>-->
+                <!--<div class="number">1</div>-->
+                <!--<span class="add">+</span>-->
+            <!--</div>-->
+        <!--</div>-->
+
+    </div>
+    <div class="orderDiv" style="color: #afafaf; line-height: 24px;">
+        50元起市内包配送<br>市内/市外5KG内统一配送邮费￥20元
+    </div>
+    <div class="message">
+        <span>买家留言:</span>
+        <input type="text" placeholder="选填:填写内容请和卖家协商确认">
+    </div>
+    <div class="Integral">
+        <span>可使用积分:</span>
+        <p><i>0 </i>积分</p>
+    </div>
+    <div class="equalMoney">
+        <span>可兑换金额:</span>
+        <p><i>0 </i>元</p>
+    </div>
+    <div class="payMoney">
+        <span class="allMoney">合计: <b>￥: <i></i> </b></span>
+        <span class="allNum">共 <i></i>件商品 </span>
+    </div>
+    <div class="payDetail">
+        <ul>
+            <li>
+                <p>费用详情</p>
+            </li>
+            <li>
+                <span class="pLeft">商品金额</span>
+                <span class="pRight">￥<i></i></span>
+            </li>
+            <li>
+                <span class="pLeft color">应付金额</span>
+                <span class="pRight color">￥<i></i></span>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="newDress">
+    <p>未添加收货人，是否创建收货人?</p>
+    <div class="sub">
+        <span class="yes">是</span>
+        <span class="no">否</span>
+    </div>
+</div>
+<div class="buyType">
+    <div class="typeChose">
+        <h4>支付方式</h4>
+        <ul>
+            <li name="0">
+                <div class="radio">
+                    <input type="radio">
+                </div>
+                <i></i>
+                <span>货到付款</span>
+            </li>
+            <li name="2">
+                <div class="radio choose">
+                    <input type="radio">
+                </div>
+                <i></i>
+                <span>微信支付</span>
+            </li>
+            <li>
+                <button class="submit">确定</button>
+                <button class="cancel">取消</button>
+            </li>
+        </ul>
+
+    </div>
+</div>
+<div class="loading">
+    <h4>下单中...</h4>
+</div>
+<!--底部-->
+<div class="orderFooter">
+    <button>提交订单</button>
+</div>
+
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        console.log(sessionStorage.getItem("buyProductIds"));
+        //获取默认的地址
+        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/receiverList?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId")},function(data){
+            console.log(data);
+            if(data.dataList.length == 0){
+                var html = "<p>请选择收货地址</p>";
+                $(".aDress").append(html);
+                $(".aDress").on("click",function(){
+                    $(".newDress").css("display","block");
+                    $(".yes").on("click",function(){
+                        $(".newDress").css("display","none");
+                        window.location.href="addNewLocation.html"
+                    });
+                    $(".no").on("click",function(){
+                        $(".newDress").css("display","none");
+                    })
+                })
+            }else{
+                $.each(data.dataList,function(index,el){
+                    if(el.isDefault == 1){
+                        console.log(el.id);
+                        $(".aDress").append(`
+                                    <div class="defaultDress">
+                                        <p>
+                                            <span>姓名: <i>${el.name}</i> </span>
+                                            <i>电话: <span>${el.phone}</span> </i>
+                                        </p>
+                                        <h4>收货地址:<span>${el.address}</span></h4>
+                                    </div>
+                                `);
+                        $(".defaultDress").on("click",function(){
+                            window.location.href="orderAdress.html"
+                        })
+                    }
+                })
+            }
+
+        });
+        //获取产品详情；
+        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/wechat/shoppingProducts?requestUser=sxbctv&requestPassword=123456",{productIds:sessionStorage.getItem("buyProductIds")},function(data){
+            console.log(data);
+            var img = sessionStorage.getItem("www");
+            if(data.resultCode && data.resultCode == 200){
+                if(sessionStorage.getItem("num")){
+                    $.each(data.dataList,function(index,el){
+                        $(".orderProducts").append(`
+                         <div class="product" id="${el.id}" rel="${el.storeName}">
+                            <div class="proImg" name="${el.storeId}">
+                                <img src="${img}${el.icon}" alt="">
+                            </div>
+                            <div class="proDetail">
+                                <h4>${el.name}</h4>
+                                <p>规格：${el.specs}</p>
+                                <i>￥<span>${el.price}</span>  <span class="restNum">库存:<i>${el.restNum}</i></span></i><br>
+                                <span>来源:${el.moduleName}</span>
+                            </div>
+                            <div class="proNum">
+                                <span class="reduce">-</span>
+                                <div class="number"></div>
+                                <span class="add">+</span>
+                            </div>
+                        </div>
+                    `);
+                        $(".proNum .number").html(sessionStorage.getItem("num"));
+                        allMoney();
+                    })
+                }else{
+                    var img = sessionStorage.getItem("www");
+                    $.each(data.dataList,function(index,el){
+                        $(".orderProducts").append(`
+                         <div class="product" id="${el.id}" rel="${el.storeName}">
+                            <div class="proImg" name="${el.storeId}">
+                                <img src="${img}${el.icon}" alt="">
+                            </div>
+                            <div class="proDetail">
+                                <h4>${el.name}</h4>
+                                <p>规格：${el.specs}</p>
+                                <i>￥<span>${el.price}</span>  <span class="restNum">库存: <i>${el.restNum}</i> </span></i><br>
+                                <span>来源:${el.moduleName}</span>
+                            </div>
+                            <div class="proNum">
+                                <span class="reduce">-</span>
+                                <div class="number"></div>
+                                <span class="add">+</span>
+                            </div>
+                        </div>
+                    `);
+                        var productIds = el.id;
+                        console.log(productIds);
+                        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/getShoppingcartNum?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId"),productId:productIds},function(data){
+                            if(data.resultCode && data.resultCode == 200){
+                                console.log(data);
+                                console.log(data.data);
+                                $(".product").eq(index).find(".proNum .number").html(data.data);
+                                allMoney();
+
+                            }
+                        });
+                    })
+                }
+            }
+
+            $(".proNum .add").on("click",function(){
+                var num =parseInt($(this).parents(".product").find(".number").html());
+                var restNum = parseFloat($(this).parents(".product").find(".restNum").find("i").html()) ;
+                console.log(num);
+                console.log(restNum);
+                if(num < restNum){
+                    $(this).parents(".product").find(".number").html(num+1);
+                }else{
+                    alert("库存不足");
+                }
+                allMoney();
+            });
+            $(".proNum .reduce").on("click",function(){
+                var num =parseInt($(this).parents(".product").find(".number").html());
+                console.log(num);
+                if(num > 1){
+                    $(this).parents(".product").find(".number").html(num-1);
+                    allMoney()
+                }else{
+                    return false;
+                }
+            });
+            //计算总数量和总价格
+            function allMoney(){
+                var allNum = 0;
+                var allMoney = 0;
+                $.each($(".product"),function(){
+                    var val =  parseInt($(this).find(".number").html());
+                    var value = parseFloat($(this).find(".proDetail i span").html());
+                    console.log(val,value);
+                    allNum += 1*val;
+                    allMoney += val * value;
+                    console.log(allNum);
+                    console.log(allMoney)
+                });
+                $(".payMoney .allNum").find("i").html(allNum.toFixed(2));
+                $(".payMoney .allMoney").find("i").html(allMoney.toFixed(2));
+                $(".pRight i").html(allMoney.toFixed(2));
+            }
+        });
+        //获取积分和金额的兑换
+        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/listVolunteerIntegral?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId")},function(data){
+            console.log(data);
+            // console.log(typeof (data.data.integral));
+            if(data.data){
+                var integral = data.data.integral;
+                $(".Integral p i").html(integral);
+                var equalMoney = integral * 1 ;
+                $(".equalMoney p i").html(equalMoney);
+            }
+        });
+
+
+        //获取配送的类型
+        var sendType = 0;
+        sessionStorage.setItem("sendType",sendType);
+        $(".modeRadio div").on("click",function(){
+            $(".modeRadio div").removeClass("active");
+            $(this).addClass("active");
+            var sendType = $(this).attr("name");
+            sessionStorage.setItem("sendType",sendType);
+        });
+
+        //获取支付的类型
+        $(".orderFooter button").on("click",function(){
+            var  payType = 2;
+            sessionStorage.setItem("payType",payType);
+            $(".buyType").css("display","block");
+            $(".radio").on("click",function(){
+                $(".radio").removeClass("choose");
+                $(this).addClass("choose");
+                var payType = $(this).parents("li").attr("name");
+                console.log(payType);
+                sessionStorage.setItem("payType",payType);
+            });
+
+
+        });
+            //取消支付下单
+            $(".cancel").on("click",function(){
+                $(".buyType").css("display","none");
+            });
+            //提交支付下单
+            $(".submit").on("click",function(){
+                $(".buyType").css("display","none");
+                $(".loading").css("display","block");
+                var phone =parseInt($(".defaultDress i span").html());
+                var userName = $(".defaultDress span i").html();
+                var location =$(".defaultDress h4 span").html();
+                // console.log(phone,userName,location);
+                // console.log(sessionStorage.getItem("payType"));
+                var carPayJson = [];
+                $.each($(".orderProducts .product"),function(index,el){
+                    var storeId = $(".orderProducts .product").eq(index).find(".proImg").attr("name");
+                    var odrProductId = $(".orderProducts .product").eq(index).attr("id");
+                    var odrPrice = $(".orderProducts .product").eq(index).find(".proDetail i span").html();
+                    var odrNum = $(".orderProducts .product").eq(index).find(".proNum .number").html();
+                    var odrRemark = $(".message input").val();
+                    // console.log(storeId,odrProductId,odrPrice,odrNum,odrRemark);
+                    var obj = {
+                        "storeId":storeId,"remark":odrRemark,"productList":[
+                            {
+                                "productId":odrProductId,
+                                "price":odrPrice,
+                                "num":odrNum
+                            }
+                        ]
+                    };
+                    carPayJson.push(obj);
+                });
+                // console.log(carPayJson)
+                carPayJson = carPayJson.map(function(item,index,carPayJson){
+                    const i = carPayJson.find(_item =>item.storeId === _item.storeId);
+                    // console.log(i);
+                    // console.log(item,"ccc")
+                    if(i!==item){
+                        i.productList.push(item.productList);
+                        return undefined;
+                    }else{
+                        i.productList = [i.productList];
+                        return i;
+                    }
+                }).filter(item=>item!==undefined);
+                //console.log(carPayJson);
+
+                var  length = carPayJson.length;
+                for(let i =0;i<length;i++){
+                    var arrq = carPayJson[i].productList.map(item=> {
+                        return item[0];
+                    });
+                    carPayJson[i].productList= [];
+                    carPayJson[i].productList = arrq;
+                    // console.log(arrq,"0");
+                }
+                console.log(carPayJson);
+                var carPayStr = JSON.stringify(carPayJson);
+                console.log(carPayStr);
+                var useIntegral = $(".Integral p i").html();
+                var integralMoney = parseFloat($(".equalMoney p i").html()) ;
+                console.log(useIntegral,integralMoney);
+                $.post("http://59.152.38.197:8990/ShoppingInterface/hscm/common/submitProductOrder?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId"),sendType:sessionStorage.getItem("sendType"),orderType:99,payType:sessionStorage.getItem("payType"),storeProductInfos:carPayStr,phone:phone,receiver:userName,address:location,useIntegral:useIntegral,integralMoney:integralMoney},function(data){
+                    console.log(data);
+                    $(".loading").css("display","none");
+                   // carClean();
+                   //  shopCar();
+                    // console.log(data.orderIds);
+                    var orderId = data.orderIds.split(",");
+                    // console.log(orderId);
+                    // console.log(orderId[0]);
+                    sessionStorage.setItem("orderId",orderId[0]);
+                    window.location.href="orderDetail.html";
+                })
+            });
+        // function shopCar(){
+        //     $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/shoppingcart?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("userId")},function(data){
+        //         console.log(data);
+        //     })
+        // }
+        // function carClean(){
+        //     $.post('http://59.152.38.197:8990/ShoppingInterface/hscm/common/deleteShoppingcart?requestUser=sxbctv&requestPassword=123456', {cartIds : sessionStorage.getItem('confirmProductCartIds')}, function(data) {
+        //         console.log(data);
+        //     });
+        // }
+    })
+</script>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>视频播放</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">视频播放</div>
+</header>
+<section>
+    <div class="myVideo" style="padding-top:56px">
+
+    </div>
+</section>
+
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html" class="first">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html" class="personal">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $.get('http://59.152.38.197:8788/SmartHotelInterface/api/appUser/kindsDetail?requestUser=sxbctv&requestPassword=123456',{id:sessionStorage.getItem('videoId')},function(data){
+        if(data.resultCode && data.resultCode==200){
+            console.log(data);
+            sessionStorage.setItem('hours',data.data.hours);
+            // console.log(data.data.hours);
+            $(".myVideo").append(`
+                                    <div class="videoCon">
+                                        <p>${data.data.name}</p>
+                                        <video width="100%" poster="" autoplay="autoplay" id="videoPlay" controls="false" name="${data.data.id}" src="${data.data.outUrl}" x-webkit-airplay="true" x5-video-player-fullscreen="true" webkit-playsinline playsinline>您的浏览器不支持 video 标签。</video>
+                                        <div class="videoSpeed"><span></span></div>
+                                        <div class="meetFileBtn"><a href="##">笔记上传</a></div>
+                                        <div class="studyNotesCont">
+                                            <div class="videoNotes"></div>
+                                        </div>
+                                    </div>
+                                `)
+            //点击上传笔记
+            $('.meetFileBtn a').on("click",function(){
+                $(".studyNotesCont").fadeIn();
+                $(".meetFileBtn").fadeOut();
+                $(".studyNotesCont .videoNotes").html("");
+                $(".studyNotesCont .videoNotes").append(`
+                        <div class="studyNotesBtn">
+                            <a href="javascript:;">取消</a>
+                            <input type="submit" value="提交" id="${data.data.id}">
+                        </div>
+                        <textarea placeholder="说点什么吧..."></textarea>
+                `);
+                //点击取消按钮
+                $(".studyNotesBtn a").on("click",function(){
+                    $(".meetFileBtn").fadeIn();
+                    $(".studyNotesCont").fadeOut();
+                });
+
+                //点击 确定 按钮---添加笔记
+                $(".studyNotesBtn input[type='submit']").on("click",function(){
+                    var myStudyVideoId = $(this).attr("id")
+                    var textVal = $(".videoNotes textarea").val();
+                    console.log(myStudyVideoId,textVal);
+                    var addNoteUrl = "http://59.152.38.197:8188/SmartHotelInterface/api/appUser/addNote?requestUser=sxbctv&requestPassword=123456";
+                    if(textVal == "" ){
+                        alert("内容不能为空!")
+                    }else{
+                        $.post(addNoteUrl,{appUserId:sessionStorage.getItem("appUserId"),type:0,kindsCateId:sessionStorage.getItem("MenuId"),kindsId:sessionStorage.getItem("videoId"),content:textVal},function(data){
+                            if(data.resultCode && data.resultCode == 200){
+                                console.log(data);
+                                alert("提交成功！")
+                                $(".meetFileBtn").fadeIn();
+                                $(".studyNotesCont").fadeOut();
+                                sessionStorage.setItem("textVal",textVal);
+                            }
+                        })
+                    }
+                });
+            });
+
+            //视频实时播放
+            var videoPlay = document.getElementById("videoPlay");
+            videoPlay.controls = false;
+            videoPlay.play();
+            sessionStorage.setItem("videoPlay","true");
+            var timer;
+            function setInterVal(){
+                timer = window.setInterval("recordStudyTime()",5000);
+            }
+            setInterVal();
+            $("#videoPlay").on("click",function(){
+                if(videoPlay.paused){
+                    videoPlay.play();
+                    setInterVal();
+                }else{
+                    videoPlay.pause();
+                    window.clearInterval(timer);
+                    //记录时长、添加学时
+                    recordStudyTime();
+                }
+            });
+
+            //播放时间点更新
+            videoPlay.addEventListener("timeupdate",function(){
+                console.log('zzzz');
+                //当前播放时间 、 视频总时长
+                var currentTime = parseInt(videoPlay.currentTime);
+                var duration = parseInt(videoPlay.duration);
+                console.log(currentTime,duration);
+                sessionStorage.setItem('myVideoCurrentTime',currentTime);
+                sessionStorage.setItem('myVideoDuration',duration);
+                console.log(((currentTime / duration)*100).toFixed(2));
+                $(".videoSpeed span").css("width",((currentTime / duration)*100).toFixed(2)+"%");
+                if( currentTime == duration ){
+                    window.clearInterval(timer);
+                    recordStudyTime();
+                }
+                if(sessionStorage.getItem("videoPlay")){
+                    //获取已有的点播时长
+                    $.get("http://59.152.38.197:8788/SmartHotelInterface/api/appUser/getCurrentDuration?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId"),kindsId:sessionStorage.getItem("videoId")},function(data){
+                        if(data.resultCode && data.resultCode == 200){
+                            document.getElementById("videoPlay").currentTime = data.data;
+                            console.log(data);
+                            console.log(data.data);
+                        }
+                    });
+                    sessionStorage.removeItem("videoPlay");
+                }
+            })
+        }
+    });
+
+    //点击footer和返回键时具备记录时长和添加学时的功能
+    // $(".return").on("click",function(){
+    //     window.clearInterval(timer);
+    //     recordStudyTime();
+    // });
+    // $(".first,.personal").on("click",function(){
+    //     window.clearInterval(timer);
+    //     recordStudyTime();
+    // })
+});
+//记录点播时长
+function recordStudyTime(){
+    // console.log("计时了");
+    var myStudyVideoId = sessionStorage.getItem("videoId");
+    var myVideoCurrentTime = sessionStorage.getItem("myVideoCurrentTime");
+        myVideoCurrentTime = parseInt(myVideoCurrentTime);
+    var myVideoDuration = sessionStorage.getItem("myVideoDuration");
+        myVideoDuration = parseInt(myVideoDuration);
+    var hours = sessionStorage.getItem("hours");
+        hours = parseFloat(hours);
+    var studiedHours = ( myVideoCurrentTime / myVideoDuration) * hours;
+    sessionStorage.setItem("studiedHours",studiedHours);
+    // console.log(hours+"学时");
+    // console.log(myVideoCurrentTime+"当前时长");
+    // console.log(myVideoDuration+"总时长");
+    // console.log(studiedHours+"已学学时");
+    // console.log(myVideoCurrentTime,myVideoDuration,studiedHours);
+    $.get("http://59.152.38.197:8788/SmartHotelInterface/api/appUser/exitDuration?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId"),kindsId:myStudyVideoId,duration:myVideoCurrentTime},function(data){
+        if(data.resultCode && data.resultCode == 200){
+            console.log(data);
+            addStudyHour();
+        }
+    });
+    //添加学时
+    function addStudyHour(){
+        // console.log("加了");
+        $.get("http://59.152.38.197:8788/SmartHotelInterface/api/appUser/addStudyHours?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId"),kindsId:sessionStorage.getItem("videoId"),studiedHours:sessionStorage.getItem("studiedHours"),type:0},function(data){
+            if(data.resultCode && data.resultCode == 200){
+                console.log(data);
+            }
+        })
+    }
+}
+</script>
+</html>

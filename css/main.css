@@ -1,0 +1,746 @@
+/*政务服务->政策公示*/
+.news .info h4 {
+    height: 45px;
+}
+
+.news .info .time {
+    width: 100%;
+    position: absolute;
+    left: 5%;
+    bottom: 5%;
+    font-size: 12px;
+}
+
+.news .info .date {
+    width: 70%;
+    display: inline-block;
+    float: left;
+}
+
+.news .info .detail {
+    width: 30%;
+    display: inline-block;
+    float: right;
+}
+
+/*政务服务->办事指南*/
+.container {
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.container .line {
+    height: 80px;
+    width: 100%;
+    border-bottom: 1px solid #BFBFBF;
+    padding-left: 5%;
+    position: relative;
+}
+
+.container .line h4 {
+    font-weight: normal;
+    font-size: 14px;
+    font-family: "微软雅黑";
+    margin-top: 20px;
+}
+
+.container .line .time {
+    width: 100%;
+    position: absolute;
+    left: 5%;
+    bottom: 5%;
+    font-size: 12px;
+}
+
+.container .line .date {
+    width: 70%;
+    display: inline-block;
+    float: left;
+}
+
+.container .line .detail {
+    width: 30%;
+    display: inline-block;
+}
+
+.passage {
+    font-size: 13px;
+    height: auto;
+}
+
+.passage .con-tit {
+    font-size: 14px;
+    height: auto;
+}
+
+.passage .content {
+    height: auto;
+    font-size: 12px;
+    margin-bottom: 50px;
+    width:100%;
+}
+.passage .dealResult {
+    height: auto;
+    font-size: 12px;
+    margin-bottom: 20px;
+    width:100%;
+}
+.passage .content p {
+    font-size: 12px;
+}
+.button{
+
+}
+/*我的社区->志愿者*/
+.products {
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.products .now {
+    height: 80px;
+    width: 100%;
+    border-bottom: 1px solid #BFBFBF;
+    padding-left: 5%;
+    position: relative;
+}
+
+.products .now h4 {
+    font-weight: normal;
+    font-size: 14px;
+    font-family: "微软雅黑";
+}
+
+.products .now .time {
+    width: 100%;
+    position: absolute;
+    left: 5%;
+    bottom: 5%;
+    font-size: 12px;
+}
+
+.products .now .date {
+    width: 70%;
+    display: inline-block;
+    float: left;
+}
+
+.products .now .detail {
+    width: 30%;
+    display: inline-block;
+
+}
+
+.products button {
+    margin-top: 20px;
+}
+
+.products .past {
+    height: 80px;
+    width: 100%;
+    border-bottom: 1px solid #BFBFBF;
+    padding-left: 5%;
+    position: relative;
+}
+
+.products .past h4 {
+    font-weight: normal;
+    font-size: 14px;
+    font-family: "微软雅黑";
+}
+
+.products .past .time {
+    width: 100%;
+    position: absolute;
+    left: 5%;
+    bottom: 5%;
+    font-size: 12px;
+}
+
+.products .past .date {
+    width: 70%;
+    display: inline-block;
+    float: left;
+}
+
+.products .past .detail {
+    width: 30%;
+    display: inline-block;
+
+}
+
+.textCont {
+    width: 92%;
+    margin: 0 4%;
+    font-size: 14px;
+    line-height: 24px;
+}
+
+/*注册*/
+.login .passwordPhone input:nth-child(2) {
+    width: 98px;
+    height: 28px;
+    background-color: #d72c2c;
+    color: white;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+.register {
+    width: 100%;
+    height: auto;
+    padding: 2%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.register ul li {
+    padding: 3%;
+    box-sizing: border-box;
+}
+
+.register ul li input {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 5%;
+    font-size: 14px;
+    color: #c0bfbf;
+    border: 0;
+    background: none;
+    border: 1px solid #d8263e;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+}
+.register ul .registerBtn {
+    height: 45px;
+}
+.register ul li button {
+    border: 0;
+    background: none;
+    height: 30px;
+    width: 100%;
+    background: #d8263e;
+    color: white;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+.register ul .registerPhone {
+    width: 100%;
+}
+
+.register ul .registerPhone input[type="text"] {
+    width: 60px;
+    margin-right: 2%;
+}
+.register ul .bindPhone input[type="text"]{
+    width: 58%;
+    display: inline-block;
+}
+.register ul .bindPhone input[type="button"]{
+    width: 40%;
+    color: #333;
+}
+.register ul .registerPhone input[type="button"] {
+    width: auto;
+    height: 26px;
+}
+.register ul .registerSex {
+    width: 100%;
+    line-height: 25px;
+    overflow: hidden;
+}
+
+.register ul .registerSex input {
+    width: auto;
+    height: auto;
+}
+
+.register ul .registerSex span {
+    display: inline-block;
+    width: 35%;
+}
+.register ul .customerType {
+    width: 100%;
+    line-height: 25px;
+    overflow: hidden;
+}
+.register ul .customerType input {
+    width: auto;
+    height: auto;
+}
+
+.register ul .customerType span {
+    display: inline-block;
+    width: 35%;
+}
+body{
+    position: relative;
+}
+.butto{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: 30px;
+    transform: translate(-23%,-50%);
+    display: none;
+}
+.butto  img{
+    width: 30px;
+    height: 30px;
+}
+.login {
+    width: 100%;
+    height: 418px;
+    overflow: hidden;
+}
+
+.login ul li {
+    padding: 3%;
+}
+
+.login ul li input {
+    width: 90%;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 5%;
+    font-size: 14px;
+    color: #c0bfbf;
+    border: 0;
+    background: none;
+    border: 1px solid #d8263e;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+}
+
+.login ul li button {
+    border: 0;
+    background: none;
+    height: 30px;
+    width: 90%;
+    background: #d8263e;
+    color: white;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+/*忘记密码*/
+.forget {
+    width: 100%;
+    height: 418px;
+    overflow: hidden;
+}
+
+.forget ul li {
+    padding: 3%;
+}
+
+.forget ul li input {
+    width: 97%;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 5%;
+    font-size: 14px;
+    color: #c0bfbf;
+    border: 0;
+    background: none;
+    border: 1px solid #d8263e;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+}
+.forget ul .bindPhone input[type="text"]{
+    width: 53%;
+    display: inline-block;
+}
+.forget ul .bindPhone input[type="button"]{
+    width: 43%;
+    color: #333;
+}
+
+.forget ul li button {
+    border: 0;
+    background: none;
+    height: 30px;
+    width: 97%;
+    background: #d8263e;
+    color: white;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+/*修改密码*/
+.password {
+    width: 100%;
+    height: 418px;
+    margin: 60px 3% 0;
+    overflow: hidden;
+}
+
+.password ul li {
+    padding: 3%;
+}
+
+.password ul li input {
+    width: 95%;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 5%;
+    font-size: 14px;
+    color: #c0bfbf;
+    border: 0;
+    background: none;
+    border: 1px solid #d8263e;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+}
+
+.password ul li button {
+    border: 0;
+    background: none;
+    height: 30px;
+    width: 95%;
+    background: #d8263e;
+    color: white;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+.password ul .registerPhone {
+    width: 100%;
+}
+
+.password ul .registerPhone input[type="text"] {
+    width: 60px;
+    margin-right: 2%;
+}
+.password ul .bindPhone input[type="text"]{
+    width: 54%;
+    display: inline-block;
+}
+.password ul .bindPhone input[type="button"]{
+    width: 40%;
+    color: #333;
+}
+/*个人中心*/
+.personalDiv {
+    width: 100%;
+    background: white;
+    position: relative;
+}
+.personalImg {
+    width: 100%;
+    height: 130px;
+    padding: 4% 8%;
+    color: white;
+    background-color: #d01414;
+}
+.personalImg p {
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+}
+.personalImg p img {
+    width: 66px;
+    height: 66px;
+    margin: 0 auto;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+.personalImg h4 {
+    width: 100%;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: normal;
+    color: #fff;
+    overflow: hidden;
+    margin-top: 10px;
+}
+.personalImg h4 a {
+    color: white;
+}
+
+/*绑定社区*/
+.bindList{
+    width: 100%;
+}
+.bindList ul li {
+    width: 94%;
+    height: 40px;
+    line-height: 40px;
+    margin: 0 3%;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+}
+/*志愿者*/
+.passage  .footer  .btn-danger{
+    display: block;
+}
+.passage  .footer  .btn-default{
+    display: none;
+}
+/*详情*/
+.submit {
+    display: none;
+
+}
+.footer  span{
+    display: inline-block;
+    font-family: '宋体';
+    margin-right: 30px;
+}
+/*捐款用户*/
+.menu .line{
+    line-height: 35px;
+    font-size: 14px;
+}
+.menu .line span{
+    display: inline-block;
+    width: 100%;
+}
+.menu .line  .userName{
+    width: 40%;
+    margin-left: 3%;
+}
+.menu .line  .money{
+    width: 50%;
+}
+/*民主自治->结果公示*/
+.praise{
+    width: 100%;
+    padding-left: 200px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+.praise  .imgOne{
+    width: 30px;
+    height: 30px;
+}
+
+.praise   .imgTwo{
+    width: 30px;
+    height: 30px;
+    display: none;
+}
+.praise span{
+    line-height: 35px;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+}
+
+.comment-show .newComment{
+    margin-bottom: 10px;
+}
+.comment-show  .comment-show-con{
+
+    height: auto;
+    border-bottom: 1px  dashed  #ccc;
+    border-top: 1px  dashed  #ccc;
+    position: relative;
+}
+.comment-show  .comment-show-con  .userName{
+    padding-left: 10px;
+    line-height: 30px;
+}
+.comment-show  .comment-show-con .content{
+    height: auto;
+
+}
+.comment-show  .comment-show-con .content .commonContent{
+    line-height: 30px;
+    text-indent: 25px;
+    line-height: 30px;
+    margin-bottom: 20px;
+}
+.comment-show  .comment-show-con .content .delBtn{
+    position: absolute;
+    right: 30px;
+    bottom: 5px;
+    display: none;
+}
+/*办事指南*/
+.progres{
+    width: 100%;
+    padding: 3%;
+    box-sizing: border-box;
+}
+.progres  .pro{
+    height: auto;
+    padding: 3%;
+    box-sizing: border-box;
+}
+.progres  .pro  h4{
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 35px;
+}
+.progres  .pro  span{
+    display: block;
+    height: 35px;
+}
+/*红黑榜单*/
+.recommend{
+     padding: 3%;
+     box-sizing: border-box;
+}
+
+/**/
+ul {
+    list-style: none;
+}
+.wrappe {
+    height: auto;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+.tabe {
+    border-bottom: 0;
+    display: flex;
+}
+.tabe li {
+    flex: 1;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    cursor: pointer;
+}
+.tabe li a{
+    height: 35px;
+    display: inline-block;
+    color: #434343;
+    font-size: 14px;
+    border-bottom: 3px solid #fff;
+    font-family: "微软雅黑";
+}
+.product {
+    width: 100%;
+    margin-top: 20px;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.product .main {
+    float: left;
+    display: none;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.product .main.selected {
+    display: block;
+}
+
+.tabe li a.active {
+    color: #ff3434;
+    border-bottom: 3px solid #ff0000;
+}
+.peopleLine ul {
+    width: 100%;
+    overflow: hidden;
+}
+
+.peopleLine ul li {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background: url('../image/orderL.png') no-repeat 94% center;
+    background-size: 10px;
+    padding: 0 8%;
+    border-bottom: 1px solid #dbdbdb;
+}
+.product {
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.product .now {
+    height: 80px;
+    width: 100%;
+    border-bottom: 1px solid #BFBFBF;
+    padding-left: 5%;
+    position: relative;
+}
+
+.product .now h4 {
+    font-weight: normal;
+    font-size: 14px;
+    font-family: "微软雅黑";
+}
+
+.product .now .time {
+    width: 100%;
+    position: absolute;
+    left: 5%;
+    bottom: 5%;
+    font-size: 12px;
+}
+
+.product .now .date {
+    width: 70%;
+    display: inline-block;
+    float: left;
+}
+
+.product .now .detail {
+    width: 30%;
+    display: inline-block;
+
+}
+
+.product button {
+    margin-top: 20px;
+}
+
+.product .past {
+    height: 80px;
+    width: 100%;
+    border-bottom: 1px solid #BFBFBF;
+    padding-left: 5%;
+    position: relative;
+}
+
+.product .past h4 {
+    font-weight: normal;
+    font-size: 14px;
+    font-family: "微软雅黑";
+}
+
+.product .past .time {
+    width: 100%;
+    position: absolute;
+    left: 5%;
+    bottom: 5%;
+    font-size: 12px;
+}
+
+.product .past .date {
+    width: 70%;
+    display: inline-block;
+    float: left;
+}
+
+.product .past .detail {
+    width: 30%;
+    display: inline-block;
+
+}

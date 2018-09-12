@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>产品列表</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">产品列表</div>
+    <div class="shopCar">
+        <div class="proNum"></div>
+    </div>
+
+</header>
+<div class="productCon"  style="padding:50px 0 60px 0;background:#f5f5f5">
+
+
+</div>
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+<!--<div class="footer">-->
+    <!--<div class="shopCar">-->
+        <!--<div class="proNum">0</div>-->
+    <!--</div>-->
+    <!--<button>确定</button>-->
+<!--</div>-->
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var indexUrl = window.location.href;
+        var indexIdx = indexUrl.indexOf('categoryId=');
+        var categoryId = indexUrl.substring(indexIdx+11,indexIdx.length);
+        console.log(categoryId);
+        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/productList?requestUser=sxbctv&requestPassword=123456",{categoryId:categoryId},function(data){
+            if(data.resultCode && data.resultCode == 200){
+                $(".productCon").html("");
+                console.log(data);
+                // var num = data.dataList.length;
+                // console.log(num);
+                // $(".proNum").html(num);
+                var img = sessionStorage.getItem("www");
+                $.each(data.dataList,function(index,el){
+                    $(".productCon").append(`
+                        <div class="product" id="${el.id}">
+                            <div class="proImg">
+                                <img src="${img}${el.icon}" alt="">
+                            </div>
+                            <div class="proDetail">
+                                <h4>${el.name}</h4>
+                                <p>${el.labels}</p>
+                                <p>已售:${el.saleNum}</p>
+                                <span>
+                                    <i>
+                                        ￥${el.price}
+                                        <del>￥${el.cost}</del>
+                                    </i>
+                                </span>
+                                <div class="pluNum">
+                                    <input type="button" value="加入购物车">
+
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                    // var  productId = el.id;
+                });
+                $(".product .proImg").on("click",function(){
+                    window.location.href="productDetail.html?productId="+$(this).parents(".product").attr("id");
+                });
+                $(".pluNum input").on("click",function(){
+                    if(sessionStorage.getItem("appUserId")){
+                        var productId = $(this).parents(".product").attr("id");
+                        // console.log(productId);
+                        alert("添加成功，在购物车等亲~");
+                        shopUpdata(productId);
+                        history.go(0);
+                    }else{
+                        alert("尚未登录！");
+                        window.location.href="../my/login.html";
+                    }
+                })
+
+
+            }
+        });
+        //点击购物车
+        $(".shopCar").on("click",function(){
+            if(sessionStorage.getItem("appUserId")){
+                window.location.href="shopCar.html"
+            }else{
+                alert("尚未登录！");
+                window.location.href="../my/login.html";
+            }
+
+        });
+
+        //购物车总数量查询
+            if(sessionStorage.getItem("appUserId")){
+                $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/getShoppingcartNum?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId")},function(data){
+                    console.log(data);
+                    if(data.data){
+                        $(".proNum").html(data.data);
+                    }else{
+                        $(".proNum").html("0");
+                    }
+                })
+            }
+
+        //调整购物车商品数量（点击加入购物车）
+        function shopUpdata (productId){
+                $.get('http://59.152.38.197:8990/ShoppingInterface/hscm/common/updateShoppingcart?requestUser=sxbctv&requestPassword=123456', {productId : productId, appUserId :sessionStorage.getItem('appUserId'), num : 1}, function(data) {
+                    console.log(data);
+                });
+        }
+
+
+
+    })
+</script>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>商品详情</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">商品详情</div>
+    <div class="shopCar">
+        <div class="proNum"></div>
+    </div>
+</header>
+<div class="detailCon"  style="padding-top:50px">
+    <div class="detailsSwiper swiper-container">
+        <div class="swiper-wrapper">
+
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="prodetail">
+        <div class="detailLeft">
+            <h4></h4>
+            <p><i></i><del></del></p>
+            <div class="salNum"></div>
+        </div>
+        <div class="proSale">
+            <div class="storeNum"><span>库存:</span><i></i></div>
+            <div class="detailNum">
+                <span class="reduce">-</span>
+                <input type="text" class="number" value="1">
+                <span class="add">+</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="storeDetail">
+        <div class="detailsMenu">
+            <div class="detailsMenuA active">商品详情</div>
+            <div class="detailsMenuA">商铺介绍</div>
+        </div>
+        <div class="detailsDesc"></div>
+        <div class="detailsShops">
+            <img class="detailsShopsImg" src="">
+            <div class="detailsShopsCont">
+                <!--<h4></h4>-->
+                <!--<p><img src="../image/imgPhone.png" alt=""><span></span></p>-->
+                <!--<p><img src="../image/imgMap.png" alt=""><span></span></p>-->
+                <!--<p><img src="../image/imgTime.png" alt=""><span></span></p>-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--底部-->
+<div class="footerDetail">
+    <button class="buy">立即购买</button>
+    <button class="addShop">加入购物车</button>
+    <button class="save">收藏</button>
+</div>
+
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var indextUrl = window.location.href,
+            indexIdx  = indextUrl.indexOf('productId='),
+            productId = indextUrl.substring(indexIdx+10,indexIdx.length);
+        sessionStorage.setItem("productId",productId);
+        sessionStorage.removeItem("buyProductIds");
+        sessionStorage.removeItem("num");
+        // console.log(productId);
+        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/productDetail?requestUser=sxbctv&requestPassword=123456",{productId:productId},function(data){
+            if(data.resultCode && data.resultCode == 200){
+                console.log(data);
+                var img = sessionStorage.getItem("www");
+                $.each(data.data.imageList,function(index,el){
+                    $(".detailsSwiper .swiper-wrapper").append(`
+                    <div class="swiper-slide">
+                        <img src="${img}${el}" alt="">
+                    </div>
+                `)
+                });
+                var detailsSwiper = new Swiper('.detailsSwiper', {
+                    autoplay: 5000,//可选选项，自动滑动
+                    loop    : true,
+                    autoHeight: true,
+                    prevButton:'.swiper-button-prev',
+                    nextButton:'.swiper-button-next',
+                    pagination : '.swiper-pagination',
+                    paginationClickable :true,		//点切换
+                    autoplayDisableOnInteraction : false,    //操作后继续
+                });
+
+                $(".prodetail .detailLeft h4").html(data.data.name);
+                $(".prodetail .detailLeft i").html('￥'+data.data.price);
+                $(".prodetail .detailLeft del").html('￥'+data.data.cost);
+                $(".prodetail .detailLeft .salNum").html('销量：'+data.data.saleNum);
+                $(".prodetail .proSale .storeNum i").html(data.data.restNum);
+                $(".detailsDesc").html(data.data.desc);
+                var productId = data.data.id;
+                var storeId = data.data.storeId;
+
+                //商铺介绍
+                $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/wechat/storeDetail?requestUser=sxbctv&requestPassword=123456",{storeId:data.data.storeId},function(data){
+                    if(data.resultCode && data.resultCode == 200){
+                        console.log(data);
+                        $(".detailsShops").attr("name",data.data.id);
+                        var imgSrc= "http://zhsq.sxbcic.com"+data.data.icon;
+                        $(".detailsShopsImg").attr("src",imgSrc);
+                        $(".detailsShopsCont").append(`
+                            <h4>${data.data.name}</h4>
+                            <p><img src="../image/imgPhone.png" alt=""><span>${data.data.tel}</span></p>
+                            <p><img src="../image/imgMap.png" alt=""><span>${data.data.address}</span></p>
+                            <p>
+                                <img src="../image/imgTime.png" alt="">
+                                <span>服务时间：${data.data.serviceStartTime}-${data.data.serviceEndTime}</span>
+                            </p>
+                        `)
+                    }
+            });
+            //获取收藏的状态；
+            collectionStatus(productId);
+            }
+
+            //点击改变数量
+            $(".detailNum .reduce").on("click",function(){
+                var val = parseInt($(this).parents(".detailNum").find(".number").val()) ;
+                var restNum =parseInt($(".storeNum i").html()) ;
+                console.log(val,restNum);
+                if(val>1){
+                    $(this).parents(".detailNum").find(".number").val(val-1);
+                    // console.log(parseInt($(this).parents(".detailNum").find(".number").val(val-1)));
+                }else{
+                    return false;
+                }
+            });
+            $(".detailNum .add").on("click",function(){
+                var val = parseInt($(this).parents(".detailNum").find(".number").val()) ;
+                var restNum =parseInt($(".storeNum i").html());
+                console.log(val,restNum);
+                if(val<restNum){
+                    $(this).parents(".detailNum").find(".number").val(val+1);
+                    // var relval =parseInt($(this).parents(".detailNum").find(".number").val(val+1)) ;
+                    // console.log(typeof (relval));
+                    // console.log(relval);
+                }else{
+                    alert('库存不足！')
+                }
+            });
+
+            //点击购物车
+            $(".shopCar").on("click",function(){
+                if(sessionStorage.getItem("appUserId")){
+                    window.location.href="shopCar.html"
+                }else{
+                    alert("尚未登录！");
+                    window.location.href="../my/login.html";
+                }
+            });
+
+            //购物车总数量查询
+            if(sessionStorage.getItem("appUserId")){
+                $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/getShoppingcartNum?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId")},function(data){
+                    console.log(data);
+                    if(data.data){
+                        $(".proNum").html(data.data);
+                    }else{
+                        // $(".proNum").css("display","none");
+                        $(".proNum").html("0");
+                    }
+                })
+            }
+
+            //点击tab切换
+            $(".detailsShops").css("display","none");
+            $(".detailsMenu .detailsMenuA").on("click",function(){
+                $(".detailsMenu .detailsMenuA").removeClass("active");
+                $(this).addClass("active");
+                if($(".detailsMenu .detailsMenuA").eq(0).hasClass("active")){
+                    $(".detailsShops").css("display","none");
+                    $(".detailsDesc").fadeIn();
+                }else{
+                    $(".detailsShops").fadeIn();
+                    $(".detailsDesc").css("display","none");
+                }
+            });
+
+
+            //点击立即购买
+            $(".buy").on("click",function(){
+                if(sessionStorage.getItem('appUserId')){
+                    sessionStorage.setItem("buyProductIds",productId);
+                    var num =parseInt($(".detailNum .number").val()) ;
+                    console.log(num);
+                    sessionStorage.setItem("num",num);
+                    console.log(sessionStorage.getItem("buyProductIds"));
+                    window.location.href="order.html";
+                }else{
+                    alert("尚未登录!");
+                    window.location.href="../my/login.html"
+                }
+            });
+            //点击加入购物车
+            $(".addShop").on("click",function(){
+                if(sessionStorage.getItem("appUserId")){
+                    var productId = sessionStorage.getItem("productId");
+                    var num = $(".detailNum .number").val();
+                    alert("添加成功，在购物车等亲~");
+                    shopUpdata (productId,num);
+                    history.go(0);
+                }else{
+                    alert("尚未登录!");
+                    window.location.href="../my/login.html"
+                }
+
+            });
+            //点击收藏
+            $(".save").on("click",function(){
+                if(sessionStorage.getItem('appUserId')){
+                    addCollection(productId)
+                }else{
+                    alert("尚未登录");
+                    window.location.href="../my/login.html"
+                }
+            })
+        });
+
+        //调整购物车商品数量
+        function shopUpdata (productId,num){
+            $.get('http://59.152.38.197:8990/ShoppingInterface/hscm/common/updateShoppingcart?requestUser=sxbctv&requestPassword=123456', {productId : productId, appUserId :sessionStorage.getItem('appUserId'), num : num}, function(data) {
+                console.log(data);
+            });
+        }
+
+        //查询收藏的状态
+        function collectionStatus(productId){
+            if(sessionStorage.getItem('appUserId')){
+                $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/getCollectionStatus?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId"),productId:productId},function(data){
+                    console.log(data);
+                    if(data.resultCode && data.resultCode == 200){
+                        if(data.data == 0){
+                            $(".save").html("收藏").css('background-color','#fb5a00').attr('name','0');
+                        }else if(data.data == 1){
+                            $(".save").html("已收藏").css('background-color','#ccc').attr('name','1');
+                        }
+                    }
+                })
+            }else{
+                alert("尚未登录");
+                window.location.href="../my/login.html"
+            }
+        }
+        //点击收藏
+        function addCollection(productId){
+            if(sessionStorage.getItem("appUserId") && parseInt($(".save").attr("name")) == 0){
+                $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/addCollection?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId"),storeId:$(".detailsShops").attr("name"),productId:productId},function(data){
+                    console.log(data);
+                    if (data.resultCode && data.resultCode == 200) {
+                        $('.save').html('已收藏').css('background-color','#ccc');
+                        alert('收藏成功');
+                        history.go(0);
+                    }
+                })
+            }else if(sessionStorage.getItem("appUserId") && parseInt($(".save").attr("name")) == 1){
+                $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/cancelCollection?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId"),storeId:$(".detailsShops").attr("name"),productId:productId},function(data){
+                    if (data.resultCode && data.resultCode == 200) {
+                        console.log(data);
+                        alert('取消成功！');
+                        history.go(0);
+                    }
+                })
+            }else {
+                alert('尚未登录');
+                window.location.href = '../my/login.html';
+            }
+        }
+
+    })
+</script>
+</html>

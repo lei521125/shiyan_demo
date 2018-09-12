@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>我的笔记</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">我的笔记</div>
+</header>
+<section>
+    <div class="myNoteKinds" style="padding-top:56px">
+
+    </div>
+</section>
+
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html" class="first">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html" class="personal">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var noteCateId = sessionStorage.getItem("noteCteId");
+        console.log(noteCateId);
+        noteKinds();
+        function noteKinds(){
+            var noteCteIdUrl= "http://59.152.38.197:8788/SmartHotelInterface/api/appUser/myNote?requestUser=sxbctv&requestPassword=123456";
+            $.get(noteCteIdUrl,{appUserId:sessionStorage.getItem("appUserId"),kindsCateId:noteCateId,type:0},function(data){
+                if(data.resultCode && data.resultCode == 200){
+                    console.log(data);
+                    $.each(data.dataList,function(index,el){
+                        $(".myNoteKinds").append(`
+                            <div class="noteKind" name="${el.id}">
+                                 <h4>${el.name}</h4>
+                                 <span>X</span>
+                            </div>
+                    `)
+                    });
+                    $(".noteKind span").on("click",function(){
+                        var delNoteKind = $(this).parents(".noteKind").attr("name");
+                        console.log(delNoteKind);
+                        $.get("http://59.152.38.197:8788/SmartHotelInterface/api/appUser/deleteMyNoteByKinds?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId"),kindsId:delNoteKind},function(data){
+                            console.log(data);
+                            $(".myNoteKinds").html("");
+                            noteKinds();
+                            // alert("删除成功!")
+
+                        })
+                    });
+                    $(".noteKind h4").on("click",function(){
+                        var NoteKind = $(this).parents(".noteKind").attr("name");
+                        sessionStorage.setItem("NoteKind",NoteKind);
+                        window.location.href="myNoteDetail.html";
+                    })
+
+                }
+            })
+        }
+
+    })
+</script>
+</html>

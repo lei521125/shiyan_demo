@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>寻找达人</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">寻找达人</div>
+</header>
+<!--轮播图-->
+<section style="padding-top: 45px;">
+    <div class="idxSwiper swiper-container">
+        <div class="swiper-wrapper" id="indexAds">
+            <div class="swiper-slide">
+               <a href="javascript:;">
+                   <img src="../image/bianmin/banner_92.png">
+               </a>
+            </div>
+        </div>
+        <div class="swiper-pagination">
+
+        </div>
+    </div>
+</section>
+<!--信息-->
+<section style="padding-bottom:50px;">
+    <div class="talentCon">
+        <!--<div class="talentList">-->
+            <!--<div class="talentImg">-->
+                <!--<img src="../image/art.png" alt="">-->
+            <!--</div>-->
+            <!--<div class="talentMess">-->
+                <!--<p class="talentName">张秀梅</p>-->
+                <!--<p><i>电话:</i><span>15689745564</span></p>-->
+                <!--<p><i>特长:</i><span>能歌善舞，琴棋书画，样样精通，长得非常漂亮</span></p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+    </div>
+</section>
+<!--底部-->
+<div class="addTalent">
+    <input type="button" value="添加达人">
+</div>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+
+    $(function(){
+        // 导航条
+        var menuSwiper = new Swiper('.menuSwiper', {
+            slidesPerView: 3,
+            paginationClickable: true,
+            freeMode: true    //自动贴合
+        });
+        $('.menuSwiper a').eq(2).addClass('active');
+        $('.menuSwiper a').on('click',function(){
+            $('.menuSwiper a').removeClass('active');
+            $(this).addClass('active');
+        });
+        // 轮播图
+        var idxSwiper = new Swiper('.idxSwiper', {
+            autoplay: 2000,//可选选项，自动滑动
+            loop    : true,
+            autoHeight: true,
+            prevButton:'.swiper-button-prev',
+            nextButton:'.swiper-button-next',
+            pagination : '.swiper-pagination',
+            paginationClickable :true,		//点切换
+            autoplayDisableOnInteraction : false,    //操作后继续
+        });
+      //寻找达人列表；
+        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/queryFindTalentList?requestUser=sxbctv&requestPassword=123456",{hotelId:sessionStorage.getItem("itemId")},function(data){
+            console.log(data);
+            $.each(data.dataList,function(index,el){
+                $(".talentCon").append(`
+                    <div class="talentList" id="${el.id}">
+                        <div class="talentImg">
+                            <img src="../image/art.png" alt="">
+                        </div>
+                        <div class="talentMess">
+                            <p class="talentName">${el.realName}</p>
+                            <p><i>电话:</i><span>${el.phone}</span></p>
+                            <p><i>特长:</i><span>${el.introduction}</span></p>
+                        </div>
+                    </div>
+                `)
+            });
+            $(".talentList").on("click",function(){
+                var talentId = $(this).attr("id");
+                    sessionStorage.setItem("talentId",talentId);
+                    window.location.href="talentDetail.html"
+            })
+        });
+        $(".addTalent input").on("click",function(){
+            // window.location.href="addTalent.html"
+            var hotelId = sessionStorage.getItem("itemId");
+            var appUserId = sessionStorage.getItem("appUserId");
+            System.toFinderTalent(hotelId,appUserId);
+        })
+    })
+</script>
+</html>

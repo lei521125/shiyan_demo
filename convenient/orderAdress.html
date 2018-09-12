@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>管理收货地址</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">管理收货地址</div>
+</header>
+<div class="adressCon"  style="padding-top:50px">
+
+
+</div>
+<!--底部-->
+<div class="addNewAdress">
+    <button>+添加新地址</button>
+</div>
+
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        // 请求收货地址列表
+            $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/receiverList?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId")},function(data){
+                console.log(data);
+                if(!data.dataList.length == 0){
+                    $.each(data.dataList,function(index,el){
+                        $(".adressCon").append(`
+                             <div class="adressList" id="${el.id}" name="${el.isDefault}">
+                                <div class="adreeMess">
+                                    <p>
+                                        <span>姓名: <i>${el.name}</i> </span>
+                                        <i>电话：<span> ${el.phone}</span></i>
+                                    </p>
+                                    <h5>收货地址: <i>${el.address}</i> </h5>
+                                </div>
+                                <div class="default">
+                                    <div class="state">
+                                        <input type="radio">
+                                    </div>
+                                    <p>设置为默认</p>
+                                </div>
+                            </div>
+                        `);
+                        // console.log($(".adressList").eq(index).attr("name"));
+                        if($(".adressList").eq(index).attr("name") == 1){
+                            $(".adressList").eq(index).find(".state").addClass("stateDefault");
+                        }
+                    });
+                    $(".state").on("click",function(){
+                        var receiverId = $(this).parents(".adressList").attr("id");
+                        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/setDefaultReceiver?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId"),receiverId:receiverId},function(data){
+                            if(data.resultCode && data.resultCode == 200){
+                                console.log(data);
+                                history.go(0);
+                                $(".state").removeClass("stateDefault");
+                                $(this).addClass("stateDefault");
+                            }
+                        });
+
+                    });
+                    $(".adressList .adreeMess").on("click",function(){
+                        var defaultState = $(this).parents(".adressList").attr("name");
+                        var receiverId= $(this).parents(".adressList").attr("id");
+                        var  userName = $(this).find("p span i").html();
+                        var userPhone = $(this).find("p i span").html();
+                        var userDress = $(this).find("h5 i").html();
+                        console.log(receiverId,userName,userPhone,userDress);
+                        sessionStorage.setItem("defaultState",defaultState);
+                        sessionStorage.setItem("userName",userName);
+                        sessionStorage.setItem("userPhone",userPhone);
+                        sessionStorage.setItem("userDress",userDress);
+                        sessionStorage.setItem("receiverId",receiverId);
+                            window.location.href="locationEdit.html"
+                    });
+                    //添加新地址
+                    $(".addNewAdress").on("click",function(){
+                        window.location.href="addNewLocation.html";
+                    })
+
+                }
+
+            })
+
+
+    })
+</script>
+</html>

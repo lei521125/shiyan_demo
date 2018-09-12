@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>注册账号</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+</head>
+<body>
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">注册</div>
+</header>
+<section style="margin: 60px 0 0 0;">
+    <div class="register">
+        <ul>
+            <li><input name="" placeholder="用户名" required></li>
+            <li class="realName"><input name="" placeholder="真实姓名" required></li>
+            <li class="registerPhoneNumber"><input type="number" name="" placeholder="手机号码" required></li>
+            <li class="bindPhone">
+                 <input type="text" name="" placeholder="验证码" required>
+                 <input type="button" value="获取验证码"/></li>
+            <li><input type="password" name="" placeholder="用户密码" required></li>
+            <li><input type="password" name="" placeholder="确认密码" required></li>
+            <li class="address"><input type="text" name="" placeholder="家庭地址" required></li>
+            <li class="registerSex">
+                性别：
+                <span>
+                    <input type="radio" name="sex" checked="checked">
+                    <span class="text">男</span>
+                </span>
+                <span>
+                    <input type="radio" name="sex">
+                    <span class="text">女</span>
+
+                </span>
+            </li>
+            <li class="customerType">
+                角色：
+                <span>
+                    <input type="radio" name="type" checked="checked">
+                    群众
+                </span>
+                <span>
+                    <input type="radio" name="type">
+                    党员
+
+                </span>
+            </li>
+            <li class="registerBtn"><button>注册</button></li>
+            <li style="text-align:center;">没有帐号？<a href="login.html">登录</a></li>
+        </ul>
+    </div>
+    <div class="butto">
+        <img src="../image/jiazai.gif">
+        <span>
+           正在注册中，请稍后.....
+        </span>
+    </div>
+</section>
+
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="login.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+<div class="look">
+
+
+</div>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script src="register.js"></script>
+</html>

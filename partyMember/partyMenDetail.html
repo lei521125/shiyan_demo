@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>党员资料</title>
+</head>
+<body style="background-color: #f5f5f5">
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">党员资料</div>
+</header>
+<div class="partyMenDetail" style="padding-top:50px">
+    <ul>
+        <li>
+            <span>姓名:</span><i></i>
+        </li>
+        <li>
+            <span>性别:</span><i></i>
+        </li>
+        <li>
+            <span>民族:</span><i></i>
+        </li>
+        <li>
+            <span>生日:</span><i></i>
+        </li>
+        <li>
+            <span>学历:</span><i></i>
+        </li>
+        <li>
+            <span>党员编号:</span><i></i>
+        </li>
+        <li>
+            <span>政治面貌:</span><i></i>
+        </li>
+        <li>
+            <span>电话号码:</span><i></i>
+        </li>
+        <li>
+            <span>支部名称:</span><i></i>
+        </li>
+        <li>
+            <span>党员积分:</span><i></i>积分
+        </li>
+        <li>
+            <span>星级:</span><i></i>
+        </li>
+        <li>
+            <span>是否流动:</span><i></i>
+        </li>
+    </ul>
+</div>
+
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $.get("http://59.152.38.197:8788/SmartHotelInterface/api/appUser/queryPartyMemInfoDetail?&requestUser=sxbctv&requestPassword=123456",{id:sessionStorage.getItem("partyMemId")},function(data){
+        console.log(data);
+        $(".partyMenDetail li").eq(0).find("i").html(data.data.name);
+        if(data.data.sex == 0){
+            $(".partyMenDetail li").eq(1).find("i").html("女");
+        }else if(data.data.sex == 1){
+            $(".partyMenDetail li").eq(1).find("i").html("男");
+        }
+        $(".partyMenDetail li").eq(2).find("i").html(data.data.nation);
+        $(".partyMenDetail li").eq(3).find("i").html(data.data.birthDate);
+        $(".partyMenDetail li").eq(4).find("i").html(data.data.education);
+        $(".partyMenDetail li").eq(5).find("i").html(data.data.no);
+        $(".partyMenDetail li").eq(6).find("i").html(data.data.politicalOutlook);
+        $(".partyMenDetail li").eq(7).find("i").html(data.data.Phone);
+        $(".partyMenDetail li").eq(8).find("i").html(data.data.parchName);
+        if(data.data.integral){
+            $(".partyMenDetail li").eq(9).find("i").html(data.data.integral);
+        }else{
+            $(".partyMenDetail li").eq(9).find("i").html("0");
+        }
+        if(data.data.starRank){
+            $(".partyMenDetail li").eq(10).find("i").html(data.data.starRank);
+        }else{
+            $(".partyMenDetail li").eq(10).find("i").html("无");
+        }
+        if(data.data.isFlowParty == 0){
+            $(".partyMenDetail li").eq(11).find("i").html("是");
+        }else if(data.data.sex == 1){
+            $(".partyMenDetail li").eq(11).find("i").html("否");
+        }
+
+    })
+
+
+</script>
+</html>

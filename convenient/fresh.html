@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>生鲜入户</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">生鲜入户</div>
+</header>
+<!--产品模块-->
+<section style="margin-top:50px">
+    <div class="navSwiper swiper-container">
+        <div class="swiper-wrapper" id="navCont">
+
+        </div>
+    </div>
+</section>
+<!--产品分类管理-->
+<section>
+    <div class="products" id="products">
+        <!--<div class="indexCont">-->
+            <!--<div class="indexContH4">-->
+                <!--<span>土特产</span>-->
+                <!--<i>更多</i>-->
+            <!--</div>-->
+            <!--<div class="indexContA">-->
+                <!--<img src="http://zhsq.sxbcic.com/Shopping_Files/goods_img_folder/small_folder/51d5eefb-6950-44f0-8e0a-805a9c9f8efe.png">-->
+                <!--<h4>五谷杂粮组合</h4>-->
+                <!--<p>500g/袋</p>-->
+                <!--<span>￥71.0</span>-->
+            <!--</div>-->
+
+            <!--<div class="indexContA">-->
+                <!--<img src="http://zhsq.sxbcic.com/Shopping_Files/goods_img_folder/small_folder/51d5eefb-6950-44f0-8e0a-805a9c9f8efe.png">-->
+                <!--<h4>五谷杂粮组合</h4>-->
+                <!--<p>500g/袋</p>-->
+                <!--<span>￥71.00</span>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+</section>
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+   $(document).ready(function(){
+       //获取页面上产品的模块
+       $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/indexModules?requestUser=sxbctv&requestPassword=123456",{cityId:sessionStorage.getItem("cityId"),itemCode:sessionStorage.getItem("itemCode")},function(data){
+           if(data.resultCode && data.resultCode == 200){
+               console.log(data);
+               if(data.dataList.length == 0){
+                   $("#navCont").html("该区域商品正在上架，请等待...");
+                   $("#navCont").css("font-size","16px");
+               }else{
+                   $.each(data.dataList,function(index,el){
+                       $(".navSwiper #navCont").append(`
+                     <div class="swiper-slide"><a href="javascript:;" name="${el.id}">${el.name}</a></div>
+                `)
+                   });
+                   // 产品模块
+                   var navSwiper = new Swiper('.navSwiper', {
+                       slidesPerView: 3,
+                       paginationClickable: true,
+                       freeMode: true    //自动贴合
+                   });
+                   $('.navSwiper a').eq(0).addClass('active');
+                   var moduleId = $(".navSwiper .swiper-slide").eq(0).find("a").attr("name");
+                   products(moduleId);
+                   $('.navSwiper a').on('click',function(){
+                       $('.navSwiper a').removeClass('active');
+                       $(this).addClass('active');
+                       var moduleId = $(this).attr("name");
+                       console.log(moduleId);
+                       products(moduleId);
+                   });
+               }
+           }
+       });
+
+    function products(moduleId){
+        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/productCategory?requestUser=sxbctv&requestPassword=123456",{moduleId:moduleId},function(data){
+            if(data.resultCode && data.resultCode == 200){
+                console.log(data);
+                $(".products").html("");
+                $.each(data.dataList,function(index,el){
+                    $(".products").append(`
+                         <div class="indexCont">
+                            <div class="indexContH4">
+                                <span>${el.name}</span>
+                                <i id="${el.id}" class="more">更多</i>
+                            </div>
+                        </div>
+                    `);
+                    var categoryId = el.id;
+                    var ProductIndex = index;
+                    // var indexContIndex = Math.abs(parseInt(data.dataList.length) - parseInt(index+1));
+                    // console.log(ProductIndex);
+                    productList(categoryId,ProductIndex);
+                });
+                $(".more").on("click",function(){
+                    window.location.href="productList.html?categoryId="+$(this).attr("id");
+                });
+            }
+        })
+    }
+
+    function productList(categoryId,ProductIndex){
+        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/productList?requestUser=sxbctv&requestPassword=123456",{categoryId:categoryId},function(data){
+            if(data.resultCode && data.resultCode == 200){
+                console.log(data);
+                var img= sessionStorage.getItem("www");
+                // console.log(img);
+                $.each(data.dataList,function(index,el){
+                    if(index < 2){
+                        $(".indexCont").eq(ProductIndex).append(`
+                              <div class="indexContA" id="${el.id}">
+                                <img src="${img}${el.icon}">
+                                <h4>${el.name}</h4>
+                                <p>${el.specs}</p>
+                                <span>￥${el.price}</span>
+                            </div>
+                        `)
+                    }
+                    $(".indexContA").on("click",function(){
+                        window.location.href="productDetail.html?productId="+$(this).attr("id");
+                    })
+                })
+            }
+        })
+    }
+
+
+
+
+
+   })
+</script>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>笔记详情</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">笔记详情</div>
+</header>
+<section>
+    <div class="myNoteDetail" style="padding-top:50px">
+
+    </div>
+</section>
+
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html" class="first">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html" class="personal">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        noteDetail();
+        function noteDetail(){
+            $(".myNoteDetail").html("");
+            var myNodeDetailUrl = 'http://59.152.38.197:8788/SmartHotelInterface/api/appUser/myNoteDetail?requestUser=sxbctv&requestPassword=123456';
+            var noteCteId = sessionStorage.getItem("noteCteId");
+            var NoteKind = sessionStorage.getItem("NoteKind");
+            $.get(myNodeDetailUrl,{appUserId:sessionStorage.getItem("appUserId"),kindsCateId:noteCteId,kindsId:NoteKind,type:0},function(data){
+                if(data.resultCode && data.resultCode == 200){
+                    console.log(data);
+                    $.each(data.dataList,function(index,el){
+                        $(".myNoteDetail").append(`
+                    <div class="content" id="${el.id}">
+                        <textarea  contenteditable="true" wrap="virtual" class="noteCon">${el.content}</textarea>
+                        <div class="noteBtn">
+                            <input type="submit" value="保存"  style="color:#3CB371" class="noteEdit">
+                            <input type="button" value="删除" style="color:red" class="delete">
+                        </div>
+                        <div class="noteTime">
+                            【${el.createTime}】
+                        </div>
+                    </div>
+
+                `)
+                });
+
+                    $(".noteCon").focus(function(){
+                        $(this).parents(".content").find(".noteBtn").fadeIn();
+
+                    });
+                    $(".noteCon").blur(function(){
+                        $(this).parents(".content").find(".noteBtn").fadeOut();
+                    })
+                    //修改笔记(提交保存)
+                    var noteEdit = document.getElementsByClassName("noteEdit");
+                    var noteEdit_len = noteEdit.length;
+                    console.log(noteEdit_len);
+                    for(var i=0;i<noteEdit_len;i++){
+                        // alert(i);
+                        (function(){
+                            var a=i;
+                            noteEdit[a].onclick = function(){
+                                // alert(a);
+                                var noteId = $(this).parents(".content").attr("id");
+                                var editCon = $(this).parents(".content").find(".noteCon").val();
+                                console.log(noteId,editCon);
+                                $.post("http://59.152.38.197:8188/SmartHotelInterface/api/appUser/editMyNote?requestUser=sxbctv&requestPassword=123456",{id:noteId,content:editCon,appUserId:sessionStorage.getItem("appUserId")},function(data){
+                                    if(data.resultCode && data.resultCode == 200){
+                                        console.log(data);
+                                        noteDetail();
+                                        alert("修改成功！");
+
+                                    }
+                                })
+                            }
+                        })()
+                    }
+
+                    //删除功能
+                    $(".delete").on("click",function(){
+                        var delId = $(this).parents(".content").attr("id");
+                        $.post("http://59.152.38.197:8188/SmartHotelInterface/api/appUser/deleteMyNote?requestUser=sxbctv&requestPassword=123456",{id:delId,appUserId:sessionStorage.getItem("appUserId")},function(data){
+                            if(data.resultCode && data.resultCode == 200){
+                                console.log(data);
+                                noteDetail();
+                                alert("删除成功！");
+
+                            }
+                        })
+                    })
+                }
+            })
+        }
+
+
+
+
+    })
+</script>
+</html>

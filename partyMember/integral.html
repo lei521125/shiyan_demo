@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>党员服务</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">积分管理</div>
+</header>
+<!--轮播图-->
+<section style="margin: 50px 0 10px 0;">
+    <div class="idxSwiper swiper-container">
+        <div class="swiper-wrapper" id="indexAds">
+            <div class="swiper-slide">
+              <a href="javascript:;">
+                  <img src="../image/dangyuan/yonghuxinxi_2.png">
+              </a>
+            </div>
+        </div>
+        <div class="swiper-pagination">
+
+        </div>
+        <!--<div class="user-info">-->
+            <!--<div class="user-pic">-->
+              <!--<p class="current">当前星级: <span>一星级</span>  </p>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+</section>
+<!--信息-->
+<section style="margin: 0 0 56px 0;">
+    <div class="partyMenCon">
+        <div class="detailed">
+                <div class="userImg">
+                    <img src="../image/dangyuan/yonghu.png" alt="">
+                </div>
+               <div class="tit">
+                   <p class="userName">用户名: <span></span> </p>
+                   <p class="integral">积分:<span></span></p>
+                   <p class="starRank">当前星级: <span></span> </p>
+               </div>
+        </div>
+    </div>
+</section>
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    // 导航条
+    var menuSwiper = new Swiper('.menuSwiper', {
+        slidesPerView: 3,
+        paginationClickable: true,
+        freeMode: true    //自动贴合
+    });
+    $('.menuSwiper a').eq(2).addClass('active');
+    $('.menuSwiper a').on('click',function(){
+        $('.menuSwiper a').removeClass('active');
+        $(this).addClass('active');
+    });
+    // 轮播图
+    var idxSwiper = new Swiper('.idxSwiper', {
+        autoplay: 2000,//可选选项，自动滑动
+        loop    : true,
+        autoHeight: true,
+        prevButton:'.swiper-button-prev',
+        nextButton:'.swiper-button-next',
+        pagination : '.swiper-pagination',
+        paginationClickable :true,		//点切换
+        autoplayDisableOnInteraction : false,    //操作后继续
+    });
+
+    //获取党员信息详情
+    $.get("http://59.152.38.197:8788/SmartHotelInterface/api/appUser/queryPartyMemInfo?&requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId")},function(data){
+        console.log(data);
+        $(".detailed .userName span").html(data.data.name);
+        $(".detailed").attr("id",data.data.id);
+        if(data.data.Integral){
+            $(".detailed .integral  span").html(data.data.Integral)
+        }else{
+            $(".detailed .integral span").html("0")
+        }
+        if(data.data.starRank){
+            $(".detailed .starRank span").html(data.data.starRank)
+        }else{
+            $(".detailed .starRank span").html("无")
+        }
+    });
+    $(".detailed").on("click",function(){
+        window.location.href="partyMenDetail.html";
+    })
+
+
+</script>
+</html>

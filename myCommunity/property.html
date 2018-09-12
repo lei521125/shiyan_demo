@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet/less" href="../css/index.less">
+    <script type="text/javascript"  src="../js/libs/less/less.js"></script>
+    <title>物业报修</title>
+</head>
+<body>
+<!--头部-->
+<header>
+    <div class="return" onclick="window.history.go(-1);">返回</div>
+    <div class="headerTit">物业报修</div>
+</header>
+<!--导航条-->
+<section style="margin: 50px 0 0 0">
+</section>
+<!--信息-->
+<section style="margin: 0 0 56px 0;">
+    <div class="sunContO" style="">
+        <div class="sunContC">
+            <a href="../text.html">
+                <div class="sunContAimg">
+                    <img src="../image/shequ/zhengce_4.png">
+                </div>
+                <h4>以老爱老-孤寡老人的援助之手</h4>
+                <span>2018-7-02</span>
+                <i>推荐</i>
+            </a>
+        </div>
+        <div class="sunContC">
+            <a href="../text.html">
+                <div class="sunContAimg">
+                    <img src="../image/shequ/zhengce_4_87.png">
+                </div>
+                <h4>[助人为乐]陈美德：热心助学的老委员</h4>
+                <span>2018-7-02</span>
+                <i>推荐</i>
+            </a>
+        </div>
+        <div class="sunContC">
+            <a href="../text.html">
+                <div class="sunContAimg">
+                    <img src="../image/shequ/zhengce_4_1.png">
+                </div>
+                <h4>社区志愿者搀扶老人过马路</h4>
+                <span>2018-7-02</span>
+                <i>推荐</i>
+            </a>
+        </div>
+    </div>
+</section>
+<!--底部-->
+<footer>
+    <nav>
+        <a href="../index.html">
+            <img src="../image/首页(1).png">
+            <p>首页</p>
+        </a>
+        <a href="../my/personal.html">
+            <img src="../image/昵称.png">
+            <p>我的</p>
+        </a>
+    </nav>
+</footer>
+</body>
+<script src="../js/libs/jquery-1.11.0.min.js"></script>
+<script src="../js/libs/bootstrap/js/bootstrap.js"></script>
+<script src="../js/libs/swiper-3.4.2.jquery.min.js"></script>
+<script src="../js/libs/template/template.js"></script>
+<script type="text/javascript">
+    // 导航条
+    var menuSwiper = new Swiper('.menuSwiper', {
+        slidesPerView: 2,
+        paginationClickable: true,
+        freeMode: true    //自动贴合
+    });
+    $('.menuSwiper a').eq(0).addClass('active');
+    $('.menuSwiper a').on('click',function(){
+        $('.menuSwiper a').removeClass('active');
+        $(this).addClass('active');
+        var taskIdx = $(this).parents('.swiper-slide').index();
+        console.log(taskIdx);
+        if(taskIdx == 0){
+            $('.sunContO').css('display','block');
+            $('.sunContT').css('display','none');
+        }else{
+            $('.sunContT').css('display','block');
+            $('.sunContO').css('display','none');
+        }
+    });
+
+
+
+
+</script>
+</html>
