@@ -18,7 +18,7 @@ $(function(){
 
     //扫一扫
     $(".personalDiv  .userBind").click(function(){
-        System.startZbarQR(sessionStorage.getItem('appUserId'));
+        System.startZbarQR(sessionStorage.getItem('appUserId'),sessionStorage.getItem('itemId'));
     });
     //联系我们
     $('.userCall').on('click',function(){
@@ -62,15 +62,21 @@ $(function(){
     })
     //退出登录
     $('.userOut').on('click',function(){
-        sessionStorage.removeItem('userName');
-        sessionStorage.removeItem('appUserId');
-        sessionStorage.removeItem('cityId');
-        sessionStorage.removeItem('itemId');
-        sessionStorage.removeItem('itemCode');
-        sessionStorage.removeItem('areaId');
-        sessionStorage.removeItem('www');
-        sessionStorage.removeItem('itemName');
-
-        window.location.href = 'personal.html';
+        $('.Out').css('display', 'block');
+        $('.Out .yes').click(function () {
+            $('.Out').css('display', 'none');
+            sessionStorage.removeItem('userName');
+            sessionStorage.removeItem('appUserId');
+            sessionStorage.removeItem('cityId');
+            sessionStorage.removeItem('itemId');
+            sessionStorage.removeItem('itemCode');
+            sessionStorage.removeItem('areaId');
+            sessionStorage.removeItem('www');
+            sessionStorage.removeItem('itemName');
+            window.location.href = 'personal.html';
+        })
+        $('.Out  .no').click(function () {
+            $('.Out').css('display', 'none')
+        })
     });
 })

@@ -384,6 +384,7 @@
 }
 .productCon{
   position: relative;
+  margin-bottom:55px;
   >.product{
     margin:2% 0;
     background-color: white;
@@ -391,6 +392,7 @@
     height:130px;
     position: relative;
     overflow: hidden;
+    //background-color: #f5f5f5;
     >.proImg{
       float: left;
       width:40%;
@@ -407,8 +409,8 @@
         font-size: 15px;
       }
       >p:nth-child(2){
-        line-height: 30px;
-        height:30px;
+        line-height: 20px;
+        height:20px;
         font-size:14px;
         color: #4d4d4d;
         margin:3% 0;
@@ -418,8 +420,8 @@
         -webkit-line-clamp: 1;
       }
       >p:nth-child(3){
-        line-height: 30px;
-        height:30px;
+        line-height: 20px;
+        height:20px;
         font-size:12px;
         margin-bottom:3%;
         color: #4d4d4d;
@@ -441,7 +443,7 @@
       >.pluNum{
         position: absolute;
         text-align: center;
-        bottom:8%;
+        bottom:3%;
         right:3%;
         border:1px solid #bfbfbf;
         border-radius: 5px;
@@ -473,7 +475,7 @@
     >.detailLeft{
       float:left;
       width:40%;
-      height:80px;
+      //height:80px;
       >h4{
         font-weight:bold;
         font-size: 16px;
@@ -593,15 +595,15 @@
   bottom:0;
   left:0;
   border-top:1px solid #dcdcdc;
-  padding:0 4%;
+  padding:0 5%;
   text-align: center;
   background-color: white;
   >button{
     float:left;
-    width:30%;
+    width:44%;
     height:36px;
     line-height: 36px;
-    margin:5px;
+    margin:3%;
     border:none;
     border-radius: 5px;
     background-color:#fb5a00;
@@ -610,6 +612,52 @@
 
   }
 }
+//加入购物车弹窗
+.addToShopCar{
+  display: none;
+  width:70%;
+  height:70px;
+  position: absolute;
+  top:50%;
+  right:0;
+  z-index: 1000;
+  margin:0 15%;
+  text-align: center;
+  background: rgba(0,0,0,.5);
+  //background: #faf2cc;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  >p{
+    line-height: 40px;
+    font-size: 16px;
+    color:#fff;
+    text-align: center;
+  }
+}
+//用户角色判断弹窗
+.userRole{
+  display: none;
+  width:70%;
+  height:70px;
+  position: absolute;
+  top:50%;
+  right:0;
+  z-index: 1000;
+  margin:0 15%;
+  text-align: center;
+  background: rgba(0,0,0,.5);
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  >p{
+    line-height: 40px;
+    font-size: 16px;
+    color:#fff;
+    text-align: center;
+  }
+}
+
 
 
 //购物车列表

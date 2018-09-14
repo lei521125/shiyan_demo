@@ -60,82 +60,89 @@ $(function(){
                         success: function(data){
                             console.log(data);
                             if(data.data.id ==undefined){
-                                $('.look').append('<p>您目前不是志愿者,请您先去完善信息！</p> <div class="sub"><span class="yes">是</span><span class="no">否</span>/div>')
+                                //$('.look').append('')
+                                $('.look').css('display','block')
                                 //alert("您目前不是志愿者,请您先去完善信息");
                                 //window.location.href = 'form.html'
                                 $('.passage').css('display','none');
                                 $('.submit').css('display','block');
-                                $('.submit .btn').click(function(){
-                                    console.log('aaaa');
-                                    var userName = $('.form-group:nth-child(1) input').val();
-                                    //console.log(userName);
-                                    var phone = $('.form-group:nth-child(2) input').val();
-                                    var reg = /^1[3|4|5|7|8][0-9]{9}$/;
-                                    var flag = reg.test(phone);
-                                    if (phone == '') {
-                                        $('.look').append('<p>请输入手机号！</p> <div class="sub"><span class="yes">是</span><span class="no">否</span>/div>')
-                                        //alert('请输入手机号！');
-                                        return false;
-                                    }else if (flag == false) {
-                                        $('.look').append('<p>请输入正确的手机号！</p> <div class="sub"><span class="yes">是</span><span class="no">否</span>/div>')
-                                        //alert('请输入正确的手机号');
-                                        return false;
-                                    }
-                                    var address = $('.form-group:nth-child(3) input').val();
-                                    //完善志愿者信息
-                                    $.ajax({
-                                        type: 'get',
-                                        url: 'http://59.152.38.197:8188/SmartHotelInterface/api/community/addVolunteer?requestUser=sxbctv&requestPassword=123456',
-                                        dataType: 'json',
-                                        data: {realName : encodeURI(userName), phone: phone, address: encodeURI(address),appUserId: sessionStorage.getItem('appUserId')},
-                                        success: function(data){
-                                            console.log(data);
-                                            $('.passage').css('display','block');
-                                            $('.submit').css('display','none');
-                                            $('.passage  button:nth-child(1)').css('display','none');
-                                            $('.passage  .footer').append(' <button type="button" class="btn  btn-danger  btn-block">我要报名</button>');
-                                            $('.footer  .btn').click(function(){
-                                                //志愿者报名
-                                                $.ajax({
-                                                    type: 'get',
-                                                    url: 'http://59.152.38.197:8188/SmartHotelInterface/api/community/addVolunteerKinds?requestUser=sxbctv&requestPassword=123456',
-                                                    dataType: 'json',
-                                                    data: {appUserId: sessionStorage.getItem('appUserId'),kindsId: textData.categroyId},
-                                                    success: function(data){
-                                                        console.log(data);
-                                                        if(data.resultCode &&data.resultCode == 200){
-                                                            $('.footer  .btn-danger').css('display', 'none');
-                                                            $('.footer  .btn-default').css('display','block');
-                                                        }
+                                $('.look .no').click(function(){
+                                    $('.submit .btn').click(function(){
+                                        console.log('aaaa');
+                                        var userName = $('.form-group:nth-child(1) input').val();
+                                        //console.log(userName);
+                                        var phone = $('.form-group:nth-child(2) input').val();
+                                        var reg = /^1[3|4|5|7|8][0-9]{9}$/;
+                                        var flag = reg.test(phone);
+                                        if (phone == '') {
+                                            //$('.look').append('<p>请输入手机号！</p> <div class="sub"><span class="yes">是</span><span class="no">否</span>/div>')
+                                            alert('请输入手机号！');
+                                            return false;
+                                        }else if (flag == false) {
+                                            //$('.look').append('<p>请输入正确的手机号！</p> <div class="sub"><span class="yes">是</span><span class="no">否</span>/div>')
+                                            alert('请输入正确的手机号');
+                                            return false;
+                                        }
+                                        var address = $('.form-group:nth-child(3) input').val();
+                                        //完善志愿者信息
+                                        $.ajax({
+                                            type: 'get',
+                                            url: 'http://59.152.38.197:8188/SmartHotelInterface/api/community/addVolunteer?requestUser=sxbctv&requestPassword=123456',
+                                            dataType: 'json',
+                                            data: {realName : encodeURI(userName), phone: phone, address: encodeURI(address),appUserId: sessionStorage.getItem('appUserId')},
+                                            success: function(data){
+                                                console.log(data);
+                                                $('.passage').css('display','block');
+                                                $('.submit').css('display','none');
+                                                $('.passage  button:nth-child(1)').css('display','none');
+                                                $('.passage  .footer').append(' <button type="button" class="btn  btn-danger  btn-block">我要报名</button>');
+                                                $('.footer  .btn').click(function(){
+                                                    //志愿者报名
+                                                    $.ajax({
+                                                        type: 'get',
+                                                        url: 'http://59.152.38.197:8188/SmartHotelInterface/api/community/addVolunteerKinds?requestUser=sxbctv&requestPassword=123456',
+                                                        dataType: 'json',
+                                                        data: {appUserId: sessionStorage.getItem('appUserId'),kindsId: kindsId},
+                                                        success: function(data){
+                                                            console.log(data);
+                                                            if(data.resultCode &&data.resultCode == 200){
+                                                                $('.footer  .btn-danger').css('display', 'none');
+                                                                $('.footer  .btn-default').css('display','block');
+                                                            }
 
-                                                    }
+                                                        }
+                                                    })
+
                                                 })
 
-                                            })
-
-                                        }
+                                            }
+                                        })
                                     })
                                 })
+
                             }else{
-                                $('.passage  button:nth-child(1)').css('display','none');
-                                $('.passage  .footer').append(' <button type="button" class="btn  btn-danger  btn-block">我要报名</button>');
-                                $('.footer .btn').click(function(){
-                                    // //参加活动
-                                    $.ajax({
-                                        type: 'get',
-                                        url: 'http://59.152.38.197:8188/SmartHotelInterface/api/community/addVolunteerKinds?requestUser=sxbctv&requestPassword=123456',
-                                        dataType: 'json',
-                                        data: {appUserId: sessionStorage.getItem('appUserId'),kindsId: 1},
-                                        success: function(data){
-                                            console.log(data);
-                                            // if(data.resultCode && data.resultCode == 200){
-                                            //     $('.footer  .btn-danger').css('display', 'none');
-                                            //     $('.footer  .btn-default').css('display','block');
-                                            // }
+                                $('.look .yes').click(function(){
+                                    $('.passage  button:nth-child(1)').css('display','none');
+                                    $('.passage  .footer').append(' <button type="button" class="btn  btn-danger  btn-block">我要报名</button>');
+                                    $('.footer .btn').click(function(){
+                                        // //参加活动
+                                        $.ajax({
+                                            type: 'get',
+                                            url: 'http://59.152.38.197:8188/SmartHotelInterface/api/community/addVolunteerKinds?requestUser=sxbctv&requestPassword=123456',
+                                            dataType: 'json',
+                                            data: {appUserId: sessionStorage.getItem('appUserId'),kindsId: kindsId},
+                                            success: function(data){
+                                                console.log(data);
+                                                // if(data.resultCode && data.resultCode == 200){
+                                                //     $('.footer  .btn-danger').css('display', 'none');
+                                                //     $('.footer  .btn-default').css('display','block');
+                                                // }
 
-                                        }
+                                            }
+                                        })
                                     })
                                 })
+
 
                             }
                         }

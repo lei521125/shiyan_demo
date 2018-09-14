@@ -58,13 +58,17 @@ $(function(){
 
 
                     $(".partyServe").on("click",function(){
-                        console.log($(this).attr('title'));
+                        // console.log($(this).attr('title'));
                         $.get("http://59.152.38.197:8188/SmartHotelInterface/api/appUser/queryUserRole?requestUser=sxbctv&requestPassword=123456",{appUserId:sessionStorage.getItem("appUserId")},function(data){
                             console.log(data);
                             if(data.data == "dangyuan"){
                                 window.location.href = "partyMember/partyMember.html?functionId=67514"
                             }else if(data.data == "common"){
-                                alert("群众身份,权限不足")
+                                // alert("群众身份,权限不足")
+                                setTimeout(function delay(){
+                                    $(".addToShopCar").css("display","block");
+                                    history.go(0);
+                                },500);
                             }
                         })
                     })

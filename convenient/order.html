@@ -139,6 +139,9 @@
 <div class="orderFooter">
     <button>提交订单</button>
 </div>
+<div class="addToShopCar">
+    <p>库存不足，请等待...</p>
+</div>
 
 </body>
 <script src="../js/libs/jquery-1.11.0.min.js"></script>
@@ -314,17 +317,27 @@
 
         //获取支付的类型
         $(".orderFooter button").on("click",function(){
-            var  payType = 2;
-            sessionStorage.setItem("payType",payType);
-            $(".buyType").css("display","block");
-            $(".radio").on("click",function(){
-                $(".radio").removeClass("choose");
-                $(this).addClass("choose");
-                var payType = $(this).parents("li").attr("name");
-                console.log(payType);
+            var proNum = parseInt($(".proNum .number").html());
+            var resetNum  = parseInt($(".restNum i").html());
+            console.log(proNum,resetNum);
+            if(proNum > resetNum ){
+                // alert("库存不足!")
+                setTimeout(function delay(){
+                    $(".addToShopCar").css("display","block");
+                    history.go(0);
+                },500);
+            }else{
+                var  payType = 2;
                 sessionStorage.setItem("payType",payType);
-            });
-
+                $(".buyType").css("display","block");
+                $(".radio").on("click",function(){
+                    $(".radio").removeClass("choose");
+                    $(this).addClass("choose");
+                    var payType = $(this).parents("li").attr("name");
+                    console.log(payType);
+                    sessionStorage.setItem("payType",payType);
+                });
+            }
 
         });
             //取消支付下单
@@ -335,6 +348,7 @@
             $(".submit").on("click",function(){
                 $(".buyType").css("display","none");
                 $(".loading").css("display","block");
+
                 var phone =parseInt($(".defaultDress i span").html());
                 var userName = $(".defaultDress span i").html();
                 var location =$(".defaultDress h4 span").html();

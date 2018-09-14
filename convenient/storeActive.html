@@ -31,7 +31,7 @@
 <script src="../js/libs/template/template.js"></script>
 <script type="text/javascript">
     $(function(){
-        $.get("http://59.152.38.197:8788/ShoppingInterface/hscm/common/queryStoreActivity?requestUser=sxbctv&requestPassword=123456",{hotelId:sessionStorage.getItem("itemId"),storeId:sessionStorage.getItem("storeId")},function(data){
+        $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/queryStoreActivity?requestUser=sxbctv&requestPassword=123456",{hotelId:sessionStorage.getItem("itemId"),storeId:sessionStorage.getItem("storeId")},function(data){
             console.log(data);
             if(data.resultCode && data.resultCode == 200){
                 $.each(data.dataList,function(index,el){

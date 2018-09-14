@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="../js/libs/bootstrap/css/bootstrap.css">
     <link rel="stylesheet/less" href="../css/index.less">
+    <link rel="stylesheet/less" href="../css/dangjian.less">
     <script type="text/javascript"  src="../js/libs/less/less.js"></script>
     <title>跳骚市场</title>
 </head>
@@ -35,43 +36,8 @@
 </section>
 <!--信息-->
 <section style="margin: 0 0 56px 0;">
-    <div class="sunCont" style="">
-        <div class="sunContC">
-           <a href="javascript:;">
-               <div class="sunContAimg">
-                   <img src="../image/bianmin/zhengce_1_98.png">
-               </div>
-               <h4>二手儿童玩具出售</h4>
-               <span>2018-7-02</span>
-           </a>
-        </div>
-        <div class="sunContC">
-           <a href="javascript:;">
-               <div class="sunContAimg">
-                   <img src="../image/bianmin/zhengce_1_6.png">
-               </div>
-               <h4>二手乐器出售</h4>
-               <span>2018-7-02</span>
-           </a>
-        </div>
-        <div class="sunContC">
-           <a href="javascript:;">
-               <div class="sunContAimg">
-                   <img src="../image/bianmin/zhengce_1_28.png">
-               </div>
-               <h4>9成新山地自行车出售</h4>
-               <span>2018-7-02 </span>
-           </a>
-        </div>
-        <div class="sunContC">
-           <a href="javascript:;">
-               <div class="sunContAimg">
-                   <img src="../image/bianmin/zhengce_1_21.png">
-               </div>
-               <h4>x号楼三室一厅精装修带家具房屋出租</h4>
-               <span>2018-7-02</span>
-           </a>
-        </div>
+    <div class="products">
+
     </div>
 </section>
 <!--底部-->
@@ -117,10 +83,59 @@
             paginationClickable :true,		//点切换
             autoplayDisableOnInteraction : false,    //操作后继续
         });
-        //上传
-        $(".sunCont  .sunContC  a").on('click',function(){
-            System.startImgSelectAC();
-        })
+
+        //跳蚤市场moduleId = 77
+            $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/productCategory?requestUser=sxbctv&requestPassword=123456",{moduleId:77},function(data){
+                if(data.resultCode && data.resultCode == 200){
+                    console.log(data);
+                    $(".products").html("");
+                    $.each(data.dataList,function(index,el){
+                        $(".products").append(`
+                         <div class="indexCont">
+                            <div class="indexContH4">
+                                <span>${el.name}</span>
+                                <i id="${el.id}" class="more">更多</i>
+                            </div>
+                        </div>
+                    `);
+                        var categoryId = el.id;
+                        var ProductIndex = index;
+                        // var indexContIndex = Math.abs(parseInt(data.dataList.length) - parseInt(index+1));
+                        // console.log(ProductIndex);
+                        productList(categoryId,ProductIndex);
+                    });
+                    $(".more").on("click",function(){
+                        window.location.href="productList.html?categoryId="+$(this).attr("id");
+                    });
+                }
+            });
+        function productList(categoryId,ProductIndex){
+            $.get("http://59.152.38.197:8990/ShoppingInterface/hscm/common/productList?requestUser=sxbctv&requestPassword=123456",{categoryId:categoryId},function(data){
+                if(data.resultCode && data.resultCode == 200){
+                    console.log(data);
+                    var img= sessionStorage.getItem("www");
+                    // console.log(img);
+                    $.each(data.dataList,function(index,el){
+                        if(index < 2){
+                            $(".indexCont").eq(ProductIndex).append(`
+                              <div class="indexContA" id="${el.id}">
+                                <img src="${img}${el.icon}">
+                                <h4>${el.name}</h4>
+                                <p>${el.specs}</p>
+                                <span>￥${el.price}</span>
+                            </div>
+                        `)
+                        }
+                        $(".indexContA").on("click",function(){
+                            window.location.href="productDetail.html?productId="+$(this).attr("id");
+                        })
+                    })
+                }
+            })
+        }
+
+
+
     })
 
 

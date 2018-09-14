@@ -13,7 +13,7 @@ $(function(){
        $.ajax({
            type     : "post",
            url      : "http://59.152.38.197:8188/SmartHotelInterface/api/appUser/login?requestUser=sxbctv&requestPassword=123456",
-           data     :{userName : userName, password : userPass,  loginType : '0'},
+           data     :{userName : encodeURI(userName), password : encodeURI(userPass),  loginType : '0'},
            success:function(data){
                console.log(data);
                if (data.resultCode && data.resultCode == 200) {
